@@ -1,3 +1,11 @@
+function addStepForm() {
+  let stepForm = document.getElementById("js-addstep-form").cloneNode(true);
+  stepForm.style.display = "block";
+  document.getElementById("js-form-area").appendChild(stepForm);
+}
+
+function removeStepForm() {}
+
 class Agreement {
   constructor(name, currency, address, contactName, contactEmail, description) {
     this.name = name;

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -86,10 +86,15 @@
         </div></details>
         
         </fieldset>
-        <button class="button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
+        <button onclick="addStepForm(); return false" class="js-addstep-button button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
+
+        <div id="js-form-area">
+          
+        </div>
+
         <!-- Add a step form -->
-        <fieldset>
-            <div class="float-right"><i class="gg-trash"></i></div><h4>Add a step</h4>
+        <!--<fieldset class="js-addstep-form" style="display:none">
+            <div class="float-right"><i onclick="removeStepForm(); return false" class="gg-trash"></i></div><h4>Add a step</h4>
             <div class="row">
                 <div class="column column-60">
                     <label for="step">Description of step</label>
@@ -111,10 +116,11 @@
             </div>
             <button class="button-secondary">Add a Payee <i class="gg-add"></i></button>
             <div class="float-right"><button class="margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
-        </fieldset>
+        </fieldset>-->
+        
         <ul id="sortlist">
-        <li>
-            <!-- Step 1 layout-->
+        <!--<li>
+            
             <fieldset>
             <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details><summary class="font2"><strong>Step 1</strong> – Annual bonus for the four founders. <em>(Cap: $1,000,000)</em></summary>
         <table>
@@ -128,7 +134,7 @@
               </tr>
             </thead>
             <tbody>
-                <!--<tr>
+                <tr>
                     <td><strong>Chaplin</strong></td>
                     <td>$payee.ua.com/charles</td>
                     <td>ILP</td>
@@ -165,15 +171,14 @@
                     <td>ILP</td>
                     <td>25</td>
                     <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
-                </tr>-->
+                </tr>
             </tbody>
             </table>
             <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
         </details>
             </fieldset>
-        </li>
-        <li>
-        <!-- Step 2 layout-->
+        </li> -->
+        <!-- <li>
         <fieldset>
             <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details><summary class="font2"><strong>Step 2</strong> – Annual expenses</summary>
         <table>
@@ -216,9 +221,9 @@
             <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
         </details>
         </fieldset>
-        </li>
-        <!-- Step 3 layout-->
-        <li>
+        </li> -->
+
+        <!-- <li>
         <fieldset>
             <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details open><summary class="font2"><strong>Step 3</strong> – Profit share between four founders and charity</summary>
                 <table>
@@ -232,7 +237,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                        <!--<tr>
+                        <tr>
                             <td><strong>Chaplin</strong></td>
                             <td>$payee.ua.com/charles</td>
                             <td>ILP</td>
@@ -266,24 +271,24 @@
                             <td>ILP</td>
                             <td>50</td>
                             <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
-                        </tr>-->
+                        </tr>
                     </tbody>
                     </table>
             <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
         </details>
         </fieldset>
-        </li>
+        </li>-->
     </ul>
-        <button>Save agreement<i class="gg-check-r"></i></button>&nbsp;<button class="button-secondary" disabled>Generate agreement</button>
-        </fieldset>
-      </form>
+    <button>Save agreement<i class="gg-check-r"></i></button>&nbsp;<button class="button-secondary" disabled>Generate agreement</button>
+    </fieldset>
+  </form>
 </div>
 
 
 
-<div id="agreement" class="container margin-top">
+<!-- <div id="agreement" class="container margin-top">
     <h4>RSML Agreement</h4>
-    <pre><code><!-----  
+    <pre><code> 
 name: “Artists United”  
 desc: “Founding agreement for film studio coop”
 url: deal.au.com
@@ -308,12 +313,43 @@ step3:
 		p2: [ "Pickford", $payee.ua.com/mary, ilp, 12.5]
 		p3: [ "Griffith", $payee.ua.com/melanie, ilp, 12.5]
 		p4: [ "Fairbanks", $payee.ua.com/douglass, ilp, 12.5]
-        p5: [ "UNICEF", $unicef.org/onate, ilp, 50] </code></pre>-->
-</div>
+        p5: [ "UNICEF", $unicef.org/onate, ilp, 50] </code></pre>
+</div> -->
     <script>
     window.addEventListener("DOMContentLoaded", function(){
             slist("sortlist");
     });
     </script>
+
+    <!-- components we want to clone -->
+
+    <div style="display:none">
+      <fieldset id="js-addstep-form" style="display:none">
+        <div class="float-right"><i onclick="removeStepForm(); return false" class="gg-trash"></i></div><h4>Add a step</h4>
+        <div class="row">
+            <div class="column column-60">
+                <label for="step">Description of step</label>
+                <input type="text" placeholder="" id="step">
+            </div>
+            <div class="column column-20">
+                <label for="step-type" class="required">Type</label>
+                <select id="step-type">
+                <option default> -- select -- </option>
+                <option value="fixed">Fixed</option>
+                <option value="percentage">%</option>
+                </select>
+            </div>
+            <div class="column column-20">
+                <label for="step-cap">Cap</label>
+                <input type="text" placeholder="Maximum payout" id="step-cap">
+                </select>
+            </div>
+        </div>
+        <button class="button-secondary">Add a Payee <i class="gg-add"></i></button>
+        <div class="float-right"><button class="margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
+      </fieldset>
+    </div>
+
+    <!-- --------------------------- -->
 </body>
 </html>
