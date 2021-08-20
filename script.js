@@ -1,3 +1,39 @@
+class Agreement {
+  constructor(name, currency, address, contactName, contactEmail, description) {
+    this.name = name;
+    this.currency = currency;
+    this.address = address;
+    this.contactName = contactName;
+    this.contactEmail = contactEmail;
+    this.description = description;
+
+    this.repeatFor = null;
+    this.unit = null;
+    this.startDate = null;
+    this.endDate = null;
+
+    this.addLimit = function (repeatFor, unit, startDate, endDate) {
+      this.repeatFor = repeatFor;
+      this.unit = unit;
+      this.startDate = startDate;
+      this.endDate = endDate;
+    };
+  }
+}
+
+let myAgreement = new Agreement(
+  "An Agreement Name",
+  "USD",
+  "Some Address",
+  "Joe Bloggs",
+  "joe@email.com",
+  "a description would go here"
+);
+
+myAgreement.addLimit(42, "hour", new Date(2021, 8, 20), new Date(2021, 10, 28));
+
+console.log(myAgreement);
+
 /* Drag and drop - from https://code-boxx.com/drag-drop-sortable-list-javascript/ 
 Half done. Works for top level but not nested level. Q.. as it is parri-parsu, why is 2nd level drag and dropable? Neatness only? Then ditch it. Otherwise switch to  https://lukasoppermann.github.io/html5sortable/index.html - which handles nesting - and also table rows. */
 
