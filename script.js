@@ -21,6 +21,14 @@ class Agreement {
   }
 }
 
+class Step {
+  constructor(description, type, cap) {
+    this.description = description;
+    this.type = type;
+    this.cap = cap;
+  }
+}
+
 let myAgreement = new Agreement(
   "An Agreement Name",
   "USD",
