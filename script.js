@@ -12,11 +12,17 @@ class Agreement {
     this.startDate = null;
     this.endDate = null;
 
+    this.steps = new Array();
+
     this.addLimit = function (repeatFor, unit, startDate, endDate) {
       this.repeatFor = repeatFor;
       this.unit = unit;
       this.startDate = startDate;
       this.endDate = endDate;
+    };
+
+    this.addStep = function (step) {
+      this.steps.push(step);
     };
   }
 }
@@ -26,19 +32,76 @@ class Step {
     this.description = description;
     this.type = type;
     this.cap = cap;
+
+    this.payees = new Array();
+
+    this.addPayee = function (payee) {
+      this.payees.push(payee);
+    };
+  }
+}
+
+class Payee {
+  constructor(name, paymentAddress, paymentType, percentage) {
+    this.name = name;
+    this.paymentAddress = paymentAddress;
+    this.paymentType = paymentType;
+    this.paymentPercentage = percentage;
   }
 }
 
 let myAgreement = new Agreement(
-  "An Agreement Name",
+  "Artists United",
   "USD",
-  "Some Address",
-  "Joe Bloggs",
-  "joe@email.com",
-  "a description would go here"
+  "$ilp.example.com/pN3K3rKULNQh",
+  "Artists United",
+  null,
+  "Founding agreement for film studio coop"
 );
 
-myAgreement.addLimit(42, "hour", new Date(2021, 8, 20), new Date(2021, 10, 28));
+myAgreement.addLimit(1, "year", new Date(2021, 8, 19), null);
+
+let step1 = new Step("Bonus for the studio founders", "%", 1000000);
+
+let payee1 = new Payee("Chaplin", "$payee.example.com/charles", "ilp", 25);
+step1.addPayee(payee1);
+
+let payee2 = new Payee("Pickford", "$payee.example.com/mary", "ilp", 25);
+step1.addPayee(payee2);
+
+let payee3 = new Payee("Griffith", "$payee.example.com/melanie", "ilp", 25);
+step1.addPayee(payee3);
+
+let payee4 = new Payee("Fairbanks", "$payee.example.com/douglass", "ilp", 25);
+step1.addPayee(payee4);
+
+myAgreement.addStep(step1);
+
+let step2 = new Step(null, "fixed", null);
+
+let payee5 = new Payee("Annual Expenses", "ID001", "dbse", "{{expenses}}");
+step2.addPayee(payee5);
+
+myAgreement.addStep(step2);
+
+let step3 = new Step("Profit share between founders and charity", "%", null);
+
+let payee6 = new Payee("Chaplin", "$payee.example.com/charles", "ilp", 12.5);
+step3.addPayee(payee6);
+
+let payee7 = new Payee("Pickford", "$payee.example.com/mary", "ilp", 12.5);
+step3.addPayee(payee7);
+
+let payee8 = new Payee("Griffith", "$payee.example.com/melanie", "ilp", 12.5);
+step3.addPayee(payee8);
+
+let payee9 = new Payee("Fairbanks", "$payee.example.com/douglass", "ilp", 12.5);
+step3.addPayee(payee9);
+
+let payee10 = new Payee("UNICEF", "$payee.example.com/unicef", "ilp", 50);
+step3.addPayee(payee10);
+
+myAgreement.addStep(step3);
 
 console.log(myAgreement);
 
