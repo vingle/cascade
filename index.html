@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    
+<div id="agreement-build" class="container margin5top">
+    <form>
+        <fieldset>
+            <div class="float-right">
+                <span class="required"></span>required.
+            </div>
+            <h3>Build an agreement</h3>
+        <div class="row">
+            <div class="column column-80">
+                <label for="name" class="required">Name for agreement</label>
+                <input type="text" placeholder="" id="name">
+            </div>
+            <div class="column column-20">
+                <label for="currency" class="required">Currency</label>
+                <select id="currency">
+                <option default> -- select -- </option>
+                <option value="USD">$</option>
+                <option value="GBP">£</option>
+                <option value="EUR">€</option>
+                <option value="INR">INR</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column column-50">
+                <label for="pointer" class="info">Payment address</label><details><summary class="info"><i class="gg-info"></i></summary>E.g. Payment Pointer, wallet or AC</details>
+                <input type="text" placeholder="" id="pointer">    
+            </div>
+            <div class="column column-25">
+                <label for="contact">Contact name</label>
+                <input type="text" placeholder="" id="contact">    
+            </div>
+            <div class="column column-25">
+                <label for="email">Contact email</label>
+                <input type="text" placeholder="" id="email">    
+            </div>
+        </div>
+        <label for="description">Description</label>
+        <textarea placeholder="" id="description"></textarea>
+        <fieldset>
+        <details><summary>
+            <strong>Limit</strong> - set an optional time or term limit on the agreement
+        </summary>
+        <div class="row margin2top">
+            <div class="column">
+                <div class="row">
+                    <div class="column column-30">
+                        <label for="period-repeat">Repeat for</label>
+                        <input type="text" placeholder="" id="period-repeat" class="margin0bottom">
+                    </div>
+                    <div class="column column-70">
+                        <label for="period-unit">Unit</label>
+                        <select id="period-unit" class="margin0bottom">
+                            <option default>select</option>
+                            <option value="transactions">Transaction(s)</option>
+                            <option value="hour">Hour(s)</option>
+                            <option value="day">Day(s)</option>
+                            <option value="week">Week(s)</option>
+                            <option value="week">Month(s)</option>
+                            <option value="week">Quarter(s)</option>
+                            <option value="week">Year(s)</option>
+                            </select>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <label for="start" class="info">Start date</label><details><summary class="info"><i class="gg-info"></i></summary>Should the agreement have a start date?</details>
+                <input type="date" id="start" name="start" class="margin0bottom"> 
+            </div>
+            <div class="column">
+                <label for="end" class="info">End date</label><details><summary class="info"><i class="gg-info"></i></summary>Should the agreement have an end date?</details>
+                <input type="date" id="end" name="end" class="margin0bottom"> 
+            </div>
+        </div></details>
+        
+        </fieldset>
+        <button class="button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
+        <!-- Add a step form -->
+        <fieldset>
+            <div class="float-right"><i class="gg-trash"></i></div><h4>Add a step</h4>
+            <div class="row">
+                <div class="column column-60">
+                    <label for="step">Description of step</label>
+                    <input type="text" placeholder="" id="step">
+                </div>
+                <div class="column column-20">
+                    <label for="step-type" class="required">Type</label>
+                    <select id="step-type">
+                    <option default> -- select -- </option>
+                    <option value="fixed">Fixed</option>
+                    <option value="percentage">%</option>
+                    </select>
+                </div>
+                <div class="column column-20">
+                    <label for="step-cap">Cap</label>
+                    <input type="text" placeholder="Maximum payout" id="step-cap">
+                    </select>
+                </div>
+            </div>
+            <button class="button-secondary">Add a Payee <i class="gg-add"></i></button>
+            <div class="float-right"><button class="margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
+        </fieldset>
+        <ul id="sortlist">
+        <li>
+            <!-- Step 1 layout-->
+            <fieldset>
+            <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details><summary class="font2"><strong>Step 1</strong> – Annual bonus for the four founders. <em>(Cap: $1,000,000)</em></summary>
+        <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Payment address</th>
+                <th>Type</th>
+                <th>%</th>
+                <th class="col8width"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <!--<tr>
+                    <td><strong>Chaplin</strong></td>
+                    <td>$payee.ua.com/charles</td>
+                    <td>ILP</td>
+                    <td>25</td>
+                    <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                </tr>
+                <tr>
+                    <td><strong>Pickford</strong></td>
+                    <td>$payee.ua.com/mary</td>
+                    <td>ILP</td>
+                    <td>25</td>
+                    <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                </tr>
+                <tr>
+                    <td>
+                    <input type="text" placeholder="Griffiths" id="payee-name"></td>
+                    <td><input type="text" placeholder="$payee.ua.com/melanie" id="payee-ac"></td>
+                    <td><select id="payee-type">
+                        <option>select</option>
+                        <option value="ilp" default>ILP</option>
+                        <option value="stripe">Stripe</option>
+                        <option value="civicrm">CiviCRM</option>
+                        <option value="wise">Wise</option>
+                        <option value="paypal">Paypal</option>
+                        <option value="iban">IBAN</option>
+                        <option value="database">Database</option>
+                        </select></td>
+                    <td><input type="text" placeholder="25" id="payee-ammount"></td>
+                    <td><div class="float-right"><i class="gg-check-r primary"></i><i class="gg-add turn"></i></button></div></td>
+                </tr>
+                <tr>
+                    <td><strong>Fairbanks</strong></td>
+                    <td>$payee.ua.com/douglass</td>
+                    <td>ILP</td>
+                    <td>25</td>
+                    <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                </tr>-->
+            </tbody>
+            </table>
+            <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
+        </details>
+            </fieldset>
+        </li>
+        <li>
+        <!-- Step 2 layout-->
+        <fieldset>
+            <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details><summary class="font2"><strong>Step 2</strong> – Annual expenses</summary>
+        <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Payment address</th>
+                <th>Type</th>
+                <th>Fixed</th>
+                <th class="col8width"></th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Annual expenses</strong></td>
+                    <td>ID001</td>
+                    <td>dbse</td>
+                    <td>{{ expenses }}</td>
+                    <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                </tr>
+                 <tr>
+                    <td>
+                    <input type="text" placeholder="Name" id="payee-name"></td>
+                    <td><input type="text" placeholder="Acount detail" id="payee-ac"></td>
+                    <td><select id="payee-type">
+                        <option>select</option>
+                        <option value="ilp" default>ILP</option>
+                        <option value="stripe">Stripe</option>
+                        <option value="civicrm">CiviCRM</option>
+                        <option value="wise">Wise</option>
+                        <option value="paypal">Paypal</option>
+                        <option value="iban">IBAN</option>
+                        <option value="database">Database</option>
+                        </select></td>
+                    <td><input type="text" placeholder="Ammount" id="payee-ammount"></td>
+                    <td><div class="float-right"><i class="gg-check-r primary"></i><i class="gg-add turn"></i></button></div></td>
+                </tr>
+            </tbody>
+            </table>
+            <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
+        </details>
+        </fieldset>
+        </li>
+        <!-- Step 3 layout-->
+        <li>
+        <fieldset>
+            <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div><details open><summary class="font2"><strong>Step 3</strong> – Profit share between four founders and charity</summary>
+                <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Payment address</th>
+                        <th>Type</th>
+                        <th>%</th>
+                        <th class="col8width"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <!--<tr>
+                            <td><strong>Chaplin</strong></td>
+                            <td>$payee.ua.com/charles</td>
+                            <td>ILP</td>
+                            <td>12.5</td>
+                            <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pickford</strong></td>
+                            <td>$payee.ua.com/mary</td>
+                            <td>ILP</td>
+                            <td>12.5</td>
+                            <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Griffiths</strong></td>
+                            <td>$payee.ua.com/melanie</td>
+                            <td>ILP</td>
+                            <td>12.5</td>
+                            <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fairbanks</strong></td>
+                            <td>$payee.ua.com/douglass</td>
+                            <td>ILP</td>
+                            <td>12.5</td>
+                            <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td><strong>UNICEF</strong></td>
+                            <td>$unicef.org/donate</td>
+                            <td>ILP</td>
+                            <td>50</td>
+                            <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+                        </tr>-->
+                    </tbody>
+                    </table>
+            <button class="button-secondary margin2top">Add a Payee <i class="gg-add"></i></button>
+        </details>
+        </fieldset>
+        </li>
+    </ul>
+        <button>Save agreement<i class="gg-check-r"></i></button>&nbsp;<button class="button-secondary" disabled>Generate agreement</button>
+        </fieldset>
+      </form>
+</div>
+
+
+
+<div id="agreement" class="container margin-top">
+    <h4>RSML Agreement</h4>
+    <pre><code><!-----  
+name: “Artists United”  
+desc: “Founding agreement for film studio coop”
+url: deal.au.com
+pointer: $ilp.uphold.com/pN3K3rKULNQh
+currency: USD
+period: 1 year
+starts: 02-05-1919
+endpoint: terms.au.com/founding
+step1: 
+	type: %
+	cap: 1000000
+		p1: [ "Chaplin", $payee.ua.com/charles, ilp, 25]
+		p2: [ "Pickford", $payee.ua.com/mary, ilp, 25]
+		p3: [ "Griffith", $payee.ua.com/melanie, ilp, 25]
+		p4: [ "Fairbanks", $payee.ua.com/douglass, ilp, 25]
+step2:
+	type: fixed  
+		p1: [“Annual expenses”, ID001, dbse, {{ expenses }} ]
+step3:
+	type: %
+		p1: [ "Chaplin", $payee.ua.com/charles, ilp, 12.5]
+		p2: [ "Pickford", $payee.ua.com/mary, ilp, 12.5]
+		p3: [ "Griffith", $payee.ua.com/melanie, ilp, 12.5]
+		p4: [ "Fairbanks", $payee.ua.com/douglass, ilp, 12.5]
+        p5: [ "UNICEF", $unicef.org/onate, ilp, 50] </code></pre>-->
+</div>
+    <script>
+    window.addEventListener("DOMContentLoaded", function(){
+            slist("sortlist");
+    });
+    </script>
+</body>
+</html>
