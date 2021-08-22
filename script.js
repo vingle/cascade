@@ -1,13 +1,17 @@
 let step = 0;
 
+function insertAfter(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
+
 function addStepForm() {
   let stepForm = document
     .getElementById("js-addstep-template")
     .firstElementChild.cloneNode(true);
 
-  stepForm.style.display = "block";
   stepForm.id = `js-step${step}`;
-  stepForm.getElementsByClassName("gg-trash")[0].id = `js-trash${step}`;
+  stepForm.getElementsByClassName("js-trash")[0].id = `js-trash${step}`;
+  stepForm.getElementsByClassName("js-add-payee")[0].id = `js-add${step}`;
   document.getElementById("js-form-area").appendChild(stepForm);
   step++;
 }
@@ -16,6 +20,31 @@ function removeStepForm(el) {
   let index = el.id.replace("js-trash", "");
   document.getElementById(`js-step${index}`).remove();
   step--;
+}
+
+function addPayee(el) {
+  let index = el.id.replace("js-add", "");
+  let step = document.getElementById(`js-step${index}`);
+
+  //create table if it doesn't exist
+
+  let table = null;
+  let tableEl = step.getElementsByTagName("table")[0];
+
+  if (typeof tableEl === "undefined") {
+    table = document
+      .getElementById("js-payeetable-template")
+      .firstElementChild.cloneNode(true);
+
+    insertAfter(table, el);
+  } else {
+    table = tableEl;
+  }
+
+  let row = document.getElementById("js-payeerow-template");
+
+  let tbody = table.getElementsByTagName("tbody")[0];
+  tbody.innerHTML += row.innerHTML;
 }
 
 class Agreement {

@@ -325,7 +325,7 @@ step3:
 
     <div id="js-addstep-template" style="display:none" >
       <fieldset class="js-addstep-form">
-        <div class="float-right"><i onclick="removeStepForm(this); return false" class="gg-trash"></i></div><h4>Add a step</h4>
+        <div class="float-right"><i onclick="removeStepForm(this); return false" class="js-trash gg-trash"></i></div><h4>Add a step</h4>
         <div class="row">
             <div class="column column-60">
                 <label for="step">Description of step</label>
@@ -345,10 +345,55 @@ step3:
                 </select>
             </div>
         </div>
-        <button class="button-secondary">Add a Payee <i class="gg-add"></i></button>
+        <button onclick="addPayee(this); return false" class="js-add-payee button-secondary">Add a Payee <i class="gg-add"></i></button>
         <div class="float-right"><button class="margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
       </fieldset>
     </div>
+
+    <div id="js-payeetable-template" style="display:none" >
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Payment address</th>
+            <th>Type</th>
+            <th>%</th>
+            <th class="col8width"></th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+
+    <table id="js-payeerow-template" style="display:none" >
+      <tr class="js-payeerow">
+        <td>
+          <input type="text" id="payee-name">
+        </td>
+        <td>
+          <input type="text" id="payee-ac">
+        </td>
+        <td>
+          <select id="payee-type">
+            <option>select</option>
+            <option value="ilp" default>ILP</option>
+            <option value="stripe">Stripe</option>
+            <option value="civicrm">CiviCRM</option>
+            <option value="wise">Wise</option>
+            <option value="paypal">Paypal</option>
+            <option value="iban">IBAN</option>
+            <option value="database">Database</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" placeholder="25" id="payee-ammount">
+        </td>
+        <td>
+          <div class="float-right"><i class="gg-check-r primary"></i><i class="gg-add turn"></i></button></div>
+        </td>
+      </tr>
+    </table>
 
     <!-- --------------------------- -->
 </body>
