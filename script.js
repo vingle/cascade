@@ -82,15 +82,17 @@ function fixPayee(el) {
   let payeeType = row.getElementsByClassName("payee-type")[0].value;
   let payeeAmount = row.getElementsByClassName("payee-amount")[0].value;
 
-  let fixedRow = document.getElementById("js-payeerow-fixed-template");
+  let fixedRow = document
+    .getElementById("js-payeerow-fixed-template")
+    .cloneNode(true);
 
-  fixedRow.innerHTML = fixedRow.innerHTML
+  let fixedRowHtml = fixedRow.innerHTML
     .replace("{{payee-name}}", payeeName)
     .replace("{{payee-ac}}", payeeAccount)
     .replace("{{payee-type}}", payeeType)
     .replace("{{payee-amount}}", payeeAmount);
 
-  row.innerHTML = fixedRow.innerHTML;
+  row.innerHTML = fixedRowHtml;
 }
 
 class Agreement {
