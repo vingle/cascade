@@ -37,6 +37,9 @@ function addPayee(el) {
       .getElementById("js-payeetable-template")
       .firstElementChild.cloneNode(true);
 
+    table.id = `js-payee-table${index}`;
+    table.getElementsByTagName("tbody")[0].id = `js-payee-table-body${index}`;
+
     insertAfter(table, el);
   } else {
     table = tableEl;
@@ -55,7 +58,16 @@ function addPayee(el) {
 
 function removePayee(el) {
   let index = el.id.replace("js-remove", "");
-  document.getElementById(`js-payee${index}`).remove();
+  let row = document.getElementById(`js-payee${index}`);
+  let tbody = row.parentElement;
+
+  if (tbody.childElementCount === 1) {
+    let index = tbody.id.replace("js-payee-table-body", "");
+    let table = document.getElementById(`js-payee-table${index}`);
+    table.remove();
+  }
+
+  row.remove();
 }
 
 class Agreement {
