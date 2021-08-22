@@ -1,4 +1,5 @@
 let step = 0;
+let payee = 0;
 
 function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
@@ -43,8 +44,18 @@ function addPayee(el) {
 
   let row = document.getElementById("js-payeerow-template");
 
+  row.getElementsByClassName("js-payeerow")[0].id = `js-payee${payee}`;
+  row.getElementsByClassName("js-remove")[0].id = `js-remove${payee}`;
+
+  payee++;
+
   let tbody = table.getElementsByTagName("tbody")[0];
   tbody.innerHTML += row.innerHTML;
+}
+
+function removePayee(el) {
+  let index = el.id.replace("js-remove", "");
+  document.getElementById(`js-payee${index}`).remove();
 }
 
 class Agreement {
