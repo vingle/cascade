@@ -89,7 +89,7 @@
         <button onclick="addStepForm(); return false" class="js-addstep-button button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
 
         <div id="js-form-area">
-          
+
         </div>
 
         <!-- Add a step form -->
@@ -323,9 +323,9 @@ step3:
 
     <!-- components we want to clone -->
 
-    <div style="display:none">
-      <fieldset id="js-addstep-form" style="display:none">
-        <div class="float-right"><i onclick="removeStepForm(); return false" class="gg-trash"></i></div><h4>Add a step</h4>
+    <div id="js-addstep-template" style="display:none" >
+      <fieldset class="js-addstep-form">
+        <div class="float-right"><i onclick="removeStepForm(this); return false" class="gg-trash"></i></div><h4>Add a step</h4>
         <div class="row">
             <div class="column column-60">
                 <label for="step">Description of step</label>

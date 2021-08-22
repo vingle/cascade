@@ -1,10 +1,22 @@
+let step = 0;
+
 function addStepForm() {
-  let stepForm = document.getElementById("js-addstep-form").cloneNode(true);
+  let stepForm = document
+    .getElementById("js-addstep-template")
+    .firstElementChild.cloneNode(true);
+
   stepForm.style.display = "block";
+  stepForm.id = `js-step${step}`;
+  stepForm.getElementsByClassName("gg-trash")[0].id = `js-trash${step}`;
   document.getElementById("js-form-area").appendChild(stepForm);
+  step++;
 }
 
-function removeStepForm() {}
+function removeStepForm(el) {
+  let index = el.id.replace("js-trash", "");
+  document.getElementById(`js-step${index}`).remove();
+  step--;
+}
 
 class Agreement {
   constructor(name, currency, address, contactName, contactEmail, description) {
