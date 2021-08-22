@@ -49,6 +49,7 @@ function addPayee(el) {
 
   row.getElementsByClassName("js-payeerow")[0].id = `js-payee${payee}`;
   row.getElementsByClassName("js-remove")[0].id = `js-remove${payee}`;
+  row.getElementsByClassName("js-fix")[0].id = `js-fix${payee}`;
 
   payee++;
 
@@ -59,6 +60,8 @@ function addPayee(el) {
 function removePayee(el) {
   let index = el.id.replace("js-remove", "");
   let row = document.getElementById(`js-payee${index}`);
+
+  // if the last row then delete the table
   let tbody = row.parentElement;
 
   if (tbody.childElementCount === 1) {
@@ -68,6 +71,26 @@ function removePayee(el) {
   }
 
   row.remove();
+}
+
+function fixPayee(el) {
+  let index = el.id.replace("js-fix", "");
+  let row = document.getElementById(`js-payee${index}`);
+
+  let payeeName = row.getElementsByClassName("payee-name")[0].value;
+  let payeeAccount = row.getElementsByClassName("payee-ac")[0].value;
+  let payeeType = row.getElementsByClassName("payee-type")[0].value;
+  let payeeAmount = row.getElementsByClassName("payee-amount")[0].value;
+
+  let fixedRow = document.getElementById("js-payeerow-fixed-template");
+
+  fixedRow.innerHTML = fixedRow.innerHTML
+    .replace("{{payee-name}}", payeeName)
+    .replace("{{payee-ac}}", payeeAccount)
+    .replace("{{payee-type}}", payeeType)
+    .replace("{{payee-amount}}", payeeAmount);
+
+  row.innerHTML = fixedRow.innerHTML;
 }
 
 class Agreement {

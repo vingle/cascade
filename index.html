@@ -369,13 +369,13 @@ step3:
     <table id="js-payeerow-template" style="display:none" >
       <tr class="js-payeerow">
         <td>
-          <input type="text" id="payee-name">
+          <input type="text" class="payee-name">
         </td>
         <td>
-          <input type="text" id="payee-ac">
+          <input type="text" class="payee-ac">
         </td>
         <td>
-          <select id="payee-type">
+          <select class="payee-type">
             <option>select</option>
             <option value="ilp" default>ILP</option>
             <option value="stripe">Stripe</option>
@@ -387,11 +387,22 @@ step3:
           </select>
         </td>
         <td>
-          <input type="text" placeholder="25" id="payee-ammount">
+          <input type="text" placeholder="25" class="payee-amount">
         </td>
         <td>
-          <div class="float-right"><i class="gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
+          <div class="float-right"><i onclick="fixPayee(this); return false" class="js-fix gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
         </td>
+      </tr>
+    </table>
+
+
+    <table id="js-payeerow-fixed-template" style="display:none" >
+      <tr>
+        <td><strong>{{payee-name}}</strong></td>
+        <td>{{payee-ac}}</td>
+        <td>{{payee-type}}</td>
+        <td>{{payee-amount}}</td>
+        <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
       </tr>
     </table>
 
