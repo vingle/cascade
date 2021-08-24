@@ -86,13 +86,13 @@ function fixPayee(el) {
     .getElementById("js-payeerow-fixed-template")
     .cloneNode(true);
 
-  let fixedRowHtml = fixedRow.innerHTML
-    .replace("{{payee-name}}", payeeName)
-    .replace("{{payee-ac}}", payeeAccount)
-    .replace("{{payee-type}}", payeeType)
-    .replace("{{payee-amount}}", payeeAmount);
+  fixedRow.getElementsByClassName("js-payee-name")[0].textContent = payeeName;
+  fixedRow.getElementsByClassName("js-payee-ac")[0].textContent = payeeAccount;
+  fixedRow.getElementsByClassName("js-payee-type")[0].textContent = payeeType;
+  fixedRow.getElementsByClassName("js-payee-amount")[0].textContent =
+    payeeAmount;
 
-  row.innerHTML = fixedRowHtml;
+  row.innerHTML = fixedRow.innerHTML;
 }
 
 class Agreement {
