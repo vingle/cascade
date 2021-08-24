@@ -27,7 +27,7 @@ function addPayee(el) {
   let index = el.id.replace("js-add", "");
   let step = document.getElementById(`js-step${index}`);
 
-  //create table if it doesn't exist
+  // create table if it doesn't exist
 
   let table = null;
   let tableEl = step.getElementsByTagName("table")[0];
@@ -39,6 +39,14 @@ function addPayee(el) {
 
     table.id = `js-payee-table${index}`;
     table.getElementsByTagName("tbody")[0].id = `js-payee-table-body${index}`;
+
+    console.log(step);
+
+    // reflect the Step type in the Payee type column
+
+    let select = step.getElementsByClassName("js-step-type")[0];
+    table.getElementsByClassName("js-payeetable-type")[0].textContent =
+      select.options[select.selectedIndex].textContent;
 
     insertAfter(table, el);
   } else {
