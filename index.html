@@ -397,12 +397,12 @@ step3:
 
 
     <table id="js-payeerow-fixed-template" style="display:none" >
-      <tr>
+      <tr class="js-payeerow">
         <td><strong class="js-payee-name"></strong></td>
         <td class="js-payee-ac"></td>
         <td class="js-payee-type"></td>
         <td class="js-payee-amount"></td>
-        <td><div class="float-right"><i class="gg-trash"></i><i class="gg-clipboard"></i></div></td>
+        <td><div class="float-right"><i onclick="removePayee(this); return false" class="js-remove gg-trash"></i><i class="gg-clipboard"></i></div></td>
       </tr>
     </table>
 

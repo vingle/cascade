@@ -86,6 +86,10 @@ function fixPayee(el) {
     .getElementById("js-payeerow-fixed-template")
     .cloneNode(true);
 
+  // required as a reference for removal
+  fixedRow.getElementsByClassName("js-payeerow")[0].id = `js-payee${index}`;
+  fixedRow.getElementsByClassName("js-remove")[0].id = `js-remove${index}`;
+
   fixedRow.getElementsByClassName("js-payee-name")[0].textContent = payeeName;
   fixedRow.getElementsByClassName("js-payee-ac")[0].textContent = payeeAccount;
   fixedRow.getElementsByClassName("js-payee-type")[0].textContent = payeeType;
