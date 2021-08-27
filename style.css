@@ -910,17 +910,20 @@ button.button-secondary {
 .gg-trash,
 .gg-clipboard,
 .gg-arrow-align-v,
-.gg-add.turn {
+.gg-add.turn,
+.icss-edit {
   color: var(--midgray);
 }
 .gg-trash:focus,
 .gg-clipboard:focus,
 .gg-arrow-align-v:focus,
 .gg-add.turn:focus,
+.icss-edit:focus,
 .gg-trash:hover,
 .gg-clipboard:hover,
 .gg-arrow-align-v:hover,
-.gg-add.turn:hover {
+.gg-add.turn:hover,
+.icss-edit:hover {
   color: currentColor;
   cursor: pointer;
 }
@@ -1137,7 +1140,8 @@ i.icss-edit {
   background-color: transparent;
   border-radius: 50% 45% 50% 35% ;
   overflow: hidden;
-  margin: 0;
+  margin: -1rem 1rem 0 0;
+  font-size: 24px;
 }
 i.icss-edit:before {
   width: .3em;
