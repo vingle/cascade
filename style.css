@@ -704,46 +704,36 @@ img {
   --primary: #52cfcf;
   --primary-dark: #3eacac;
 }
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
-
 .container {
   max-width: 94rem;
 }
-
 .primary {
   color: var(--primary);
 }
-
 .secondary {
   color: var(--secondary);
 }
-
 .font2 {
   font-size: 2rem;
 }
-
 .margin2top {
   margin-top: 2rem;
 }
-
 .margin5top {
   margin-top: 5rem;
 }
-
 .margin0bottom,
 td input,
 td select {
   margin-bottom: 0.25rem;
 }
-
 .col8width {
   width: 8rem;
 }
-
 fieldset,
 input,
 select,
@@ -751,15 +741,12 @@ textarea,
 .margin2bottom {
   margin-bottom: 2rem;
 }
-
 table {
   margin-bottom: 0;
 }
-
 pre {
   border-color: var(--primary);
 }
-
 td,
 th {
   padding: 1.2rem 1rem;
@@ -891,7 +878,6 @@ textarea,
 select {
   background-color: #fff;
 }
-
 .required:after {
   content: "•";
   color: var(--alert);
@@ -899,7 +885,6 @@ select {
   position: relative;
   font-weight: bold;
 }
-
 .button,
 button,
 input[type="button"],
@@ -908,7 +893,6 @@ input[type="submit"] {
   background-color: var(--primary);
   border-color: var(--primary);
 }
-
 button.button-secondary {
   background-color: var(--secondary);
   border-color: var(--secondary);
@@ -929,7 +913,6 @@ button.button-secondary {
 .gg-add.turn {
   color: var(--midgray);
 }
-
 .gg-trash:focus,
 .gg-clipboard:focus,
 .gg-arrow-align-v:focus,
@@ -941,7 +924,6 @@ button.button-secondary {
   color: currentColor;
   cursor: pointer;
 }
-
 .gg-info {
   box-sizing: border-box;
   position: relative;
@@ -984,7 +966,6 @@ button.button-secondary {
   border-bottom-right-radius: 1px;
   margin-top: 4px;
 }
-
 .gg-trash::after,
 .gg-trash::before {
   content: "";
@@ -992,7 +973,6 @@ button.button-secondary {
   box-sizing: border-box;
   position: absolute;
 }
-
 .gg-trash::after {
   background: currentColor;
   border-radius: 3px;
@@ -1001,7 +981,6 @@ button.button-secondary {
   top: -4px;
   left: -5px;
 }
-
 .gg-trash::before {
   width: 10px;
   height: 4px;
@@ -1012,7 +991,6 @@ button.button-secondary {
   top: -7px;
   left: -2px;
 }
-
 .gg-arrow-align-v {
   box-sizing: border-box;
   position: relative;
@@ -1027,7 +1005,6 @@ button.button-secondary {
     linear-gradient(to left, currentColor 15px, transparent 0) no-repeat
       center/10px 2px;
 }
-
 .gg-arrow-align-v::after,
 .gg-arrow-align-v::before {
   content: "";
@@ -1039,19 +1016,16 @@ button.button-secondary {
   transform: rotate(-45deg);
   left: 2px;
 }
-
 .gg-arrow-align-v::after {
   border-bottom: 2px solid;
   border-left: 2px solid;
   bottom: 1px;
 }
-
 .gg-arrow-align-v::before {
   border-top: 2px solid;
   border-right: 2px solid;
   top: 1px;
 }
-
 .gg-clipboard {
   box-sizing: border-box;
   position: relative;
@@ -1062,7 +1036,6 @@ button.button-secondary {
   border: 2px solid;
   border-radius: 2px;
 }
-
 .gg-clipboard::after,
 .gg-clipboard::before {
   content: "";
@@ -1073,7 +1046,6 @@ button.button-secondary {
   width: 10px;
   left: 2px;
 }
-
 .gg-clipboard::before {
   border: 2px solid;
   border-bottom-left-radius: 3px;
@@ -1081,14 +1053,12 @@ button.button-secondary {
   top: -2px;
   height: 6px;
 }
-
 .gg-clipboard::after {
   height: 2px;
   background: currentColor;
   box-shadow: 0 -4px 0 0;
   bottom: 2px;
 }
-
 .gg-add {
   box-sizing: border-box;
   position: relative;
@@ -1099,7 +1069,6 @@ button.button-secondary {
   transform: scale(var(--ggs, 1));
   border-radius: 22px;
 }
-
 .gg-add::after,
 .gg-add::before {
   content: "";
@@ -1143,28 +1112,71 @@ button.button-secondary {
   transform-origin: bottom left;
   transform: rotate(45deg);
 }
-
 .gg-add.turn {
   transform: rotate(45deg) scale(var(--ggs, 1));
 }
-
+/* Adds edit icon from https://github.com/Viglino/iconicss */
+i[class*="icss-"] {
+  position: relative;
+  display:inline-block;
+  font-style: normal;
+  background-color:currentColor;
+  box-sizing: border-box;
+  vertical-align: middle;
+}
+i[class*="icss-"]:before, 
+i[class*="icss-"]:after {
+  content: "";
+  border-width: 0; 
+  position: absolute;
+  box-sizing: border-box;
+}
+i.icss-edit {
+  width: 1em;
+  height: 1em;
+  background-color: transparent;
+  border-radius: 50% 45% 50% 35% ;
+  overflow: hidden;
+  margin: 0;
+}
+i.icss-edit:before {
+  width: .3em;
+  height: .8em;
+  border: .15em solid transparent;
+  border-top: .24em solid currentColor; 
+  transform: rotate(45deg) translate(-50%);
+  transform-origin: 0 0;
+  box-shadow: 
+    0 -.05em, 
+    .24em -.8em, 
+    -.24em -.8em, 
+    0 -1.5em;
+  clip: rect(-.9em .3em 1em 0);
+  left: .25em;
+  top: .75em;
+}
+i.icss-edit:after {
+  width: .1em;
+  height: 0;
+  background-color: transparent;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
 .float-right .gg-clipboard,
 .float-right .gg-trash {
   float: right;
   margin-right: 1rem;
 }
-
 .float-right .gg-add.turn {
   margin-right: 0.6rem;
 }
-
 .float-right .gg-arrow-align-v,
 .float-right .gg-add,
 .float-right .gg-check-r {
   float: right;
   cursor: pointer;
 }
-
 button .gg-add,
 button .gg-check-r {
   float: right;
