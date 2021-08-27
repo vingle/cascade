@@ -119,7 +119,7 @@ function saveStep(el) {
     .cloneNode(true);
 
   fixedStep.getElementsByClassName("js-step-number")[0].innerText = `Step ${
-    index + 1
+    Number(index) + 1
   }`;
 
   fixedStep.getElementsByClassName("js-step-description")[0].innerText =
