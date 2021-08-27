@@ -329,11 +329,11 @@ step3:
         <div class="row">
             <div class="column column-60">
                 <label for="step">Description of step</label>
-                <input type="text" placeholder="" id="step">
+                <input type="text" placeholder="" class="js-step" name="step">
             </div>
             <div class="column column-20">
                 <label for="step-type" class="required">Type</label>
-                <select class="js-step-type" id="step-type">
+                <select class="js-step-type" class="js-step-type" name="step-type">
                 <option default> -- select -- </option>
                 <option value="fixed">Fixed</option>
                 <option value="percentage">%</option>
@@ -341,12 +341,12 @@ step3:
             </div>
             <div class="column column-20">
                 <label for="step-cap">Cap</label>
-                <input type="text" placeholder="Maximum payout" id="step-cap">
+                <input type="text" placeholder="Maximum payout" class="js-step-cap" name="step-cap">
                 </select>
             </div>
         </div>
         <button onclick="addPayee(this); return false" class="js-add-payee button-secondary">Add a Payee <i class="gg-add"></i></button>
-        <div class="float-right"><button class="margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
+        <div class="float-right"><button onclick="saveStep(this); return false" class="js-save-step margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
       </fieldset>
     </div>
 
@@ -390,7 +390,7 @@ step3:
           <input type="text" placeholder="25" class="payee-amount">
         </td>
         <td>
-          <div class="float-right"><i onclick="fixPayee(this); return false" class="js-fix gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
+          <div class="float-right"><i onclick="fixPayee(this); return false" class="js-payee-fix gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
         </td>
       </tr>
     </table>
@@ -405,6 +405,15 @@ step3:
         <td><div class="float-right"><i onclick="removePayee(this); return false" class="js-remove gg-trash"></i><i class="gg-clipboard"></i></div></td>
       </tr>
     </table>
+
+    <div id="js-addstep-fixed-template" style="display:none" >
+      <div class="float-right"><i class="gg-arrow-align-v"></i><i class="gg-clipboard"></i></div>
+      <details class="js-step-details">
+        <summary class="js-step-summary font2">
+          <strong class="js-step-number">Step </strong> – <span class="js-step-description"></span> <em>(Cap:<span class="js-step-cap"></span>)</em>
+        </summary>
+      </details>
+    </div>
 
     <!-- --------------------------- -->
 </body>

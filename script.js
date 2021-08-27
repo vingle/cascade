@@ -13,6 +13,7 @@ function addStepForm() {
   stepForm.id = `js-step${step}`;
   stepForm.getElementsByClassName("js-trash")[0].id = `js-trash${step}`;
   stepForm.getElementsByClassName("js-add-payee")[0].id = `js-add${step}`;
+  stepForm.getElementsByClassName("js-save-step")[0].id = `js-save${step}`;
   document.getElementById("js-form-area").appendChild(stepForm);
   step++;
 }
@@ -40,8 +41,6 @@ function addPayee(el) {
     table.id = `js-payee-table${index}`;
     table.getElementsByTagName("tbody")[0].id = `js-payee-table-body${index}`;
 
-    console.log(step);
-
     // reflect the Step type in the Payee type column
 
     let select = step.getElementsByClassName("js-step-type")[0];
@@ -57,7 +56,7 @@ function addPayee(el) {
 
   row.getElementsByClassName("js-payeerow")[0].id = `js-payee${payee}`;
   row.getElementsByClassName("js-remove")[0].id = `js-remove${payee}`;
-  row.getElementsByClassName("js-fix")[0].id = `js-fix${payee}`;
+  row.getElementsByClassName("js-payee-fix")[0].id = `js-payee-fix${payee}`;
 
   payee++;
 
@@ -82,7 +81,7 @@ function removePayee(el) {
 }
 
 function fixPayee(el) {
-  let index = el.id.replace("js-fix", "");
+  let index = el.id.replace("js-payee-fix", "");
   let row = document.getElementById(`js-payee${index}`);
 
   let payeeName = row.getElementsByClassName("payee-name")[0].value;
@@ -105,6 +104,33 @@ function fixPayee(el) {
     payeeAmount;
 
   row.innerHTML = fixedRow.innerHTML;
+}
+
+function saveStep(el) {
+  let index = el.id.replace("js-save", "");
+
+  let step = document.getElementById(`js-step${index}`);
+  let description = step.getElementsByClassName("js-step")[0].value;
+
+  let cap = step.getElementsByClassName("js-step-cap")[0].value;
+
+  let fixedStep = document
+    .getElementById("js-addstep-fixed-template")
+    .cloneNode(true);
+
+  fixedStep.getElementsByClassName("js-step-number")[0].innerText = `Step ${
+    index + 1
+  }`;
+
+  fixedStep.getElementsByClassName("js-step-description")[0].innerText =
+    description;
+
+  fixedStep.getElementsByClassName("js-step-cap")[0].innerText = cap;
+
+  let table = step.getElementsByTagName("table")[0];
+
+  step.innerHTML = fixedStep.innerHTML;
+  step.getElementsByClassName("js-step-details")[0].append(table);
 }
 
 class Agreement {
