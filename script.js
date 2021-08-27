@@ -6,62 +6,84 @@ function insertAfter(newNode, referenceNode) {
 }
 
 function addStepForm() {
-  let stepForm = document
-    .getElementById("js-addstep-template")
+  const stepForm = document
+    .querySelector("#js-addstep-template")
     .firstElementChild.cloneNode(true);
 
   stepForm.id = `js-step${step}`;
-  stepForm.getElementsByClassName("js-trash")[0].id = `js-trash${step}`;
-  stepForm.getElementsByClassName("js-add-payee")[0].id = `js-add${step}`;
-  stepForm.getElementsByClassName("js-save-step")[0].id = `js-save${step}`;
-  document.getElementById("js-form-area").appendChild(stepForm);
+
+  // set ids so that we can associate the step with the button clicked
+
+  stepForm.querySelector(".js-trash").id = `js-trash${step}`;
+  stepForm.querySelector(".js-add-payee").id = `js-add${step}`;
+  stepForm.querySelector(".js-save-step").id = `js-save${step}`;
+
+  document.querySelector("#js-form-area").appendChild(stepForm);
   step++;
 }
 
 function removeStepForm(el) {
-  let index = el.id.replace("js-trash", "");
-  document.getElementById(`js-step${index}`).remove();
+  const index = el.id.replace("js-trash", "");
+  document.querySelector(`#js-step${index}`).remove();
   step--;
+
+  // rename all steps and buttons so numbers match (no gaps)
+
+  let steps = document.querySelectorAll("#js-form-area .js-addstep-form");
+
+
+  steps.forEach((el, index) => {
+    console.log(el);
+    el.id = `js-step${index}`;
+    el.querySelector(".js-trash").id = `js-trash${index}`;
+    el.querySelector(".js-add-payee").id = `js-add${index}`;
+    el.querySelector(".js-save-step").id = `js-save${index}`;
+
+    // TODO: rename step description in form if it exists
+
+  });
 }
 
 function addPayee(el) {
   let index = el.id.replace("js-add", "");
-  let step = document.getElementById(`js-step${index}`);
+  let step = document.querySelector(`#js-step${index}`);
 
-  // create table if it doesn't exist
+  let typeIndex = step.querySelector(".js-step-type").selectedIndex;
 
-  let table = null;
-  let tableEl = step.getElementsByTagName("table")[0];
+  // type is a required field
+  if (typeIndex > 0) {
 
-  if (typeof tableEl === "undefined") {
-    table = document
-      .getElementById("js-payeetable-template")
-      .firstElementChild.cloneNode(true);
+    // create table if it doesn't exist
 
-    table.id = `js-payee-table${index}`;
-    table.getElementsByTagName("tbody")[0].id = `js-payee-table-body${index}`;
+    let table = step.querySelector("table");
 
-    // reflect the Step type in the Payee type column
+    if (typeof table === "undefined" || table === null) {
+      table = document.querySelector("#js-payeetable-template").firstElementChild.cloneNode(true);
+      table.id = `js-payee-table${index}`;
+      table.querySelector("tbody").id = `js-payee-table-body${index}`;
 
-    let select = step.getElementsByClassName("js-step-type")[0];
-    table.getElementsByClassName("js-payeetable-type")[0].textContent =
-      select.options[select.selectedIndex].textContent;
+      // reflect the Step type in the Payee type column
 
-    insertAfter(table, el);
+      let select = step.querySelector(".js-step-type");
+      table.querySelector(".js-payeetable-type").textContent =
+        select.options[select.selectedIndex].textContent;
+
+      insertAfter(table, el);
+    }
+
+    let row = document.querySelector("#js-payeerow-template");
+
+    row.querySelector(".js-payeerow").id = `js-payee${payee}`;
+    row.querySelector(".js-remove").id = `js-remove${payee}`;
+    row.querySelector(".js-payee-fix").id = `js-payee-fix${payee}`;
+
+    payee++;
+
+    let tbody = table.querySelector("tbody");
+    tbody.innerHTML += row.innerHTML;
   } else {
-    table = tableEl;
+    showAlert("Type is a required field.", step);
   }
-
-  let row = document.getElementById("js-payeerow-template");
-
-  row.getElementsByClassName("js-payeerow")[0].id = `js-payee${payee}`;
-  row.getElementsByClassName("js-remove")[0].id = `js-remove${payee}`;
-  row.getElementsByClassName("js-payee-fix")[0].id = `js-payee-fix${payee}`;
-
-  payee++;
-
-  let tbody = table.getElementsByTagName("tbody")[0];
-  tbody.innerHTML += row.innerHTML;
 }
 
 function removePayee(el) {
@@ -109,28 +131,50 @@ function fixPayee(el) {
 function saveStep(el) {
   let index = el.id.replace("js-save", "");
 
-  let step = document.getElementById(`js-step${index}`);
-  let description = step.getElementsByClassName("js-step")[0].value;
+  let step = document.querySelector(`#js-step${index}`);
+  let typeIndex = step.querySelector(".js-step-type").selectedIndex;
 
-  let cap = step.getElementsByClassName("js-step-cap")[0].value;
+  // type is a required field
+  if (typeIndex > 0) {
+    let description = step.getElementsByClassName("js-step")[0].value;
 
-  let fixedStep = document
-    .getElementById("js-addstep-fixed-template")
-    .cloneNode(true);
+    let cap = step.getElementsByClassName("js-step-cap")[0].value;
+  
+    let fixedStep = document
+      .getElementById("js-addstep-fixed-template")
+      .cloneNode(true);
+  
+    fixedStep.getElementsByClassName("js-step-number")[0].innerText = `Step ${Number(index) + 1}`;
+    fixedStep.getElementsByClassName("js-step-description")[0].innerText = description;
+    fixedStep.getElementsByClassName("js-step-cap")[0].innerText = cap;
+  
+    let table = step.getElementsByTagName("table")[0];
+  
+    step.innerHTML = fixedStep.innerHTML;
+    step.getElementsByClassName("js-step-details")[0].append(table);
+  } else {
+    showAlert("Type is a required field.", step);
+  }
+}
 
-  fixedStep.getElementsByClassName("js-step-number")[0].innerText = `Step ${
-    Number(index) + 1
-  }`;
-
-  fixedStep.getElementsByClassName("js-step-description")[0].innerText =
-    description;
-
-  fixedStep.getElementsByClassName("js-step-cap")[0].innerText = cap;
-
-  let table = step.getElementsByTagName("table")[0];
-
-  step.innerHTML = fixedStep.innerHTML;
-  step.getElementsByClassName("js-step-details")[0].append(table);
+function showAlert(message, container) {
+  // create div
+  const div = document.createElement("div");
+  // add classes
+  div.className = `alert`;
+  // add text
+  div.appendChild(document.createTextNode(message));
+  // Get parent
+  //const container = document.querySelector(".container");
+  // get form
+  const form = document.querySelector("#agreement-form");
+  // insert alert
+  //container.insertBefore(div, form);
+  container.appendChild(div);
+  // timeout after 3 secs
+  setTimeout(function () {
+    document.querySelector(".alert").remove();
+  }, 3000);
 }
 
 class Agreement {
