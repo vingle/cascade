@@ -65,8 +65,7 @@ function addPayee(el) {
       // reflect the Step type in the Payee type column
 
       let select = step.querySelector(".js-step-type");
-      table.querySelector(".js-payeetable-type").textContent =
-        select.options[select.selectedIndex].textContent;
+      table.querySelector(".js-payeetable-type").textContent = select.options[select.selectedIndex].textContent;
 
       insertAfter(table, el);
     }
@@ -88,14 +87,14 @@ function addPayee(el) {
 
 function removePayee(el) {
   let index = el.id.replace("js-remove", "");
-  let row = document.getElementById(`js-payee${index}`);
+  let row = document.querySelector(`#js-payee${index}`);
 
   // if the last row then delete the table
   let tbody = row.parentElement;
 
   if (tbody.childElementCount === 1) {
     let index = tbody.id.replace("js-payee-table-body", "");
-    let table = document.getElementById(`js-payee-table${index}`);
+    let table = document.querySelector(`#js-payee-table${index}`);
     table.remove();
   }
 
@@ -104,26 +103,23 @@ function removePayee(el) {
 
 function fixPayee(el) {
   let index = el.id.replace("js-payee-fix", "");
-  let row = document.getElementById(`js-payee${index}`);
+  let row = document.querySelector(`#js-payee${index}`);
 
-  let payeeName = row.getElementsByClassName("payee-name")[0].value;
-  let payeeAccount = row.getElementsByClassName("payee-ac")[0].value;
-  let payeeType = row.getElementsByClassName("payee-type")[0].value;
-  let payeeAmount = row.getElementsByClassName("payee-amount")[0].value;
+  let payeeName = row.querySelector(".payee-name").value;
+  let payeeAccount = row.querySelector(".payee-ac").value;
+  let payeeType = row.querySelector(".payee-type").value;
+  let payeeAmount = row.querySelector(".payee-amount").value;
 
-  let fixedRow = document
-    .getElementById("js-payeerow-fixed-template")
-    .cloneNode(true);
+  let fixedRow = document.querySelector("#js-payeerow-fixed-template").cloneNode(true);
 
   // required as a reference for removal
-  fixedRow.getElementsByClassName("js-payeerow")[0].id = `js-payee${index}`;
-  fixedRow.getElementsByClassName("js-remove")[0].id = `js-remove${index}`;
+  fixedRow.querySelector(".js-payeerow").id = `js-payee${index}`;
+  fixedRow.querySelector(".js-remove").id = `js-remove${index}`;
 
-  fixedRow.getElementsByClassName("js-payee-name")[0].textContent = payeeName;
-  fixedRow.getElementsByClassName("js-payee-ac")[0].textContent = payeeAccount;
-  fixedRow.getElementsByClassName("js-payee-type")[0].textContent = payeeType;
-  fixedRow.getElementsByClassName("js-payee-amount")[0].textContent =
-    payeeAmount;
+  fixedRow.querySelector(".js-payee-name").textContent = payeeName;
+  fixedRow.querySelector(".js-payee-ac").textContent = payeeAccount;
+  fixedRow.querySelector(".js-payee-type").textContent = payeeType;
+  fixedRow.querySelector(".js-payee-amount").textContent = payeeAmount;
 
   row.innerHTML = fixedRow.innerHTML;
 }
@@ -136,22 +132,20 @@ function saveStep(el) {
 
   // type is a required field
   if (typeIndex > 0) {
-    let description = step.getElementsByClassName("js-step")[0].value;
+    let description = step.querySelector(".js-step").value;
 
-    let cap = step.getElementsByClassName("js-step-cap")[0].value;
+    let cap = step.querySelector(".js-step-cap").value;
   
-    let fixedStep = document
-      .getElementById("js-addstep-fixed-template")
-      .cloneNode(true);
+    let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
   
-    fixedStep.getElementsByClassName("js-step-number")[0].innerText = `Step ${Number(index) + 1}`;
-    fixedStep.getElementsByClassName("js-step-description")[0].innerText = description;
-    fixedStep.getElementsByClassName("js-step-cap")[0].innerText = cap;
+    fixedStep.querySelector(".js-step-number").innerText = `Step ${Number(index) + 1}`;
+    fixedStep.querySelector(".js-step-description").innerText = description;
+    fixedStep.querySelector(".js-step-cap").innerText = cap;
   
-    let table = step.getElementsByTagName("table")[0];
+    let table = step.querySelector("table");
   
     step.innerHTML = fixedStep.innerHTML;
-    step.getElementsByClassName("js-step-details")[0].append(table);
+    step.querySelector(".js-step-details").append(table);
   } else {
     showAlert("Type is a required field.", step);
   }
