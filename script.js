@@ -5,6 +5,17 @@ function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+function getOptionIndex(selectElement, value) {
+  let options = selectElement.options;
+  index = 0;
+  for (let option of options) {
+    if (option.textContent === value) {
+      return index;
+    }
+    index++;
+  }
+}
+
 function addStepForm() {
   const stepForm = document
     .querySelector("#js-addstep-template")
@@ -72,6 +83,7 @@ function addPayee(el) {
 
     let row = document.querySelector("#js-payeerow-template");
 
+    // required as a reference for removal / adding
     row.querySelector(".js-payeerow").id = `js-payee${payee}`;
     row.querySelector(".js-remove").id = `js-remove${payee}`;
     row.querySelector(".js-payee-fix").id = `js-payee-fix${payee}`;
@@ -101,26 +113,56 @@ function removePayee(el) {
   row.remove();
 }
 
+function editPayee(el) {
+  let index = el.id.replace("js-edit", "");
+  let row = document.querySelector(`#js-payee${index}`);
+
+  let payeeName = row.querySelector(".js-payee-name").textContent;
+  let payeeAccount = row.querySelector(".js-payee-ac").textContent;
+  let payeeType = row.querySelector(".js-payee-type").textContent;
+  let payeeAmount = row.querySelector(".js-payee-amount").textContent;
+
+  let editRow = document.querySelector("#js-payeerow-template").cloneNode(true);
+
+  // required as a reference for removal / adding
+  editRow.querySelector(".js-payeerow").id = `js-payee${index}`;
+  editRow.querySelector(".js-remove").id = `js-remove${index}`;
+  editRow.querySelector(".js-payee-fix").id = `js-payee-fix${index}`;
+
+  editRow.querySelector(".js-payee-name").setAttribute('value', payeeName);
+  editRow.querySelector(".js-payee-ac").setAttribute('value', payeeAccount);
+
+  let select = editRow.querySelector(".js-payee-type");
+  let selectedIndex = getOptionIndex(select, payeeType);
+  select.options[selectedIndex].setAttribute('selected', "true");
+  editRow.querySelector(".js-payee-amount").setAttribute('value', payeeAmount);
+
+  row.innerHTML = editRow.innerHTML;
+}
+
 function fixPayee(el) {
   let index = el.id.replace("js-payee-fix", "");
   let row = document.querySelector(`#js-payee${index}`);
 
-
-  let typeIndex = row.querySelector(".payee-type").selectedIndex;
+  let typeIndex = row.querySelector(".js-payee-type").selectedIndex;
 
   // type is a required field
   if (typeIndex > 0) {
 
-    let payeeName = row.querySelector(".payee-name").value;
-    let payeeAccount = row.querySelector(".payee-ac").value;
-    let payeeType = row.querySelector(".payee-type").value;
-    let payeeAmount = row.querySelector(".payee-amount").value;
+    let payeeName = row.querySelector(".js-payee-name").value;
+    let payeeAccount = row.querySelector(".js-payee-ac").value;
+
+    let select = row.querySelector(".js-payee-type");
+    let payeeType = select.options[select.selectedIndex].textContent;
+
+    let payeeAmount = row.querySelector(".js-payee-amount").value;
 
     let fixedRow = document.querySelector("#js-payeerow-fixed-template").cloneNode(true);
 
-    // required as a reference for removal
+    // required as a reference for removal / edit
     fixedRow.querySelector(".js-payeerow").id = `js-payee${index}`;
     fixedRow.querySelector(".js-remove").id = `js-remove${index}`;
+    fixedRow.querySelector(".js-edit").id = `js-edit${index}`;
 
     fixedRow.querySelector(".js-payee-name").textContent = payeeName;
     fixedRow.querySelector(".js-payee-ac").textContent = payeeAccount;
@@ -134,6 +176,8 @@ function fixPayee(el) {
     showAlert("Type is a required field.", row.parentElement);
   }
 }
+
+
 
 function saveStep(el) {
   let index = el.id.replace("js-save", "");

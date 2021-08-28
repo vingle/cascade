@@ -369,13 +369,13 @@ step3:
     <table id="js-payeerow-template" style="display:none" >
       <tr class="js-payeerow">
         <td>
-          <input type="text" class="payee-name">
+          <input type="text" class="js-payee-name" value="">
         </td>
         <td>
-          <input type="text" class="payee-ac">
+          <input type="text" class="js-payee-ac">
         </td>
         <td>
-          <select class="payee-type">
+          <select class="js-payee-type">
             <option>select</option>
             <option value="ilp" default>ILP</option>
             <option value="stripe">Stripe</option>
@@ -387,7 +387,7 @@ step3:
           </select>
         </td>
         <td>
-          <input type="text" class="payee-amount">
+          <input type="text" class="js-payee-amount">
         </td>
         <td>
           <div class="float-right"><i onclick="fixPayee(this); return false" class="js-payee-fix gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
@@ -395,14 +395,13 @@ step3:
       </tr>
     </table>
 
-
     <table id="js-payeerow-fixed-template" style="display:none" >
       <tr class="js-payeerow">
         <td><strong class="js-payee-name"></strong></td>
         <td class="js-payee-ac"></td>
         <td class="js-payee-type"></td>
         <td class="js-payee-amount"></td>
-        <td><div class="float-right"><i onclick="removePayee(this); return false" class="js-remove gg-trash"></i><i class="icss-edit"></i></div></td>
+        <td><div class="float-right"><i onclick="removePayee(this); return false" class="js-remove gg-trash"></i><i onclick="editPayee(this); return false" class="js-edit icss-edit"></i></div></td>
       </tr>
     </table>
 
