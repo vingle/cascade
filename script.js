@@ -105,23 +105,34 @@ function fixPayee(el) {
   let index = el.id.replace("js-payee-fix", "");
   let row = document.querySelector(`#js-payee${index}`);
 
-  let payeeName = row.querySelector(".payee-name").value;
-  let payeeAccount = row.querySelector(".payee-ac").value;
-  let payeeType = row.querySelector(".payee-type").value;
-  let payeeAmount = row.querySelector(".payee-amount").value;
 
-  let fixedRow = document.querySelector("#js-payeerow-fixed-template").cloneNode(true);
+  let typeIndex = row.querySelector(".payee-type").selectedIndex;
 
-  // required as a reference for removal
-  fixedRow.querySelector(".js-payeerow").id = `js-payee${index}`;
-  fixedRow.querySelector(".js-remove").id = `js-remove${index}`;
+  // type is a required field
+  if (typeIndex > 0) {
 
-  fixedRow.querySelector(".js-payee-name").textContent = payeeName;
-  fixedRow.querySelector(".js-payee-ac").textContent = payeeAccount;
-  fixedRow.querySelector(".js-payee-type").textContent = payeeType;
-  fixedRow.querySelector(".js-payee-amount").textContent = payeeAmount;
+    let payeeName = row.querySelector(".payee-name").value;
+    let payeeAccount = row.querySelector(".payee-ac").value;
+    let payeeType = row.querySelector(".payee-type").value;
+    let payeeAmount = row.querySelector(".payee-amount").value;
 
-  row.innerHTML = fixedRow.innerHTML;
+    let fixedRow = document.querySelector("#js-payeerow-fixed-template").cloneNode(true);
+
+    // required as a reference for removal
+    fixedRow.querySelector(".js-payeerow").id = `js-payee${index}`;
+    fixedRow.querySelector(".js-remove").id = `js-remove${index}`;
+
+    fixedRow.querySelector(".js-payee-name").textContent = payeeName;
+    fixedRow.querySelector(".js-payee-ac").textContent = payeeAccount;
+    fixedRow.querySelector(".js-payee-type").textContent = payeeType;
+    fixedRow.querySelector(".js-payee-amount").textContent = payeeAmount;
+
+    row.innerHTML = fixedRow.innerHTML;
+  }
+  else
+  {
+    showAlert("Type is a required field.", row.parentElement);
+  }
 }
 
 function saveStep(el) {
