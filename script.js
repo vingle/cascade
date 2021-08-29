@@ -200,7 +200,12 @@ function saveStep(el) {
     let table = step.querySelector("table");
   
     step.innerHTML = fixedStep.innerHTML;
-    step.querySelector(".js-step-details").append(table);
+    if (table !== null) {
+      step.querySelector(".js-step-details").append(table);
+    } else {
+      step.querySelector(".js-step-details").append("No payees added.");
+    }
+    
   } else {
     showAlert("Type is a required field.", step);
   }
