@@ -42,7 +42,6 @@ function removeStepForm(el) {
 
   let steps = document.querySelectorAll("#js-form-area .js-addstep-form");
 
-
   steps.forEach((el, index) => {
     console.log(el);
     el.id = `js-step${index}`;
@@ -177,8 +176,6 @@ function fixPayee(el) {
   }
 }
 
-
-
 function saveStep(el) {
   let index = el.id.replace("js-save", "");
 
@@ -187,15 +184,18 @@ function saveStep(el) {
 
   // type is a required field
   if (typeIndex > 0) {
+    
     let description = step.querySelector(".js-step").value;
-
     let cap = step.querySelector(".js-step-cap").value;
-  
+
     let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
+
+    fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
   
     fixedStep.querySelector(".js-step-number").innerText = `Step ${Number(index) + 1}`;
     fixedStep.querySelector(".js-step-description").innerText = description;
     fixedStep.querySelector(".js-step-cap").innerText = cap;
+    fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
   
     let table = step.querySelector("table");
   
@@ -204,6 +204,33 @@ function saveStep(el) {
   } else {
     showAlert("Type is a required field.", step);
   }
+}
+
+function editStep(el) {
+  let index = el.id.replace("js-edit", "");
+  let row = document.querySelector(`#js-step${index}`);
+
+  let cap = row.querySelector(".js-step-cap").textContent;
+  let description = row.querySelector(".js-step-description").textContent;
+  let stepTypeIndex = row.querySelector(".js-step-type-index").textContent;
+
+  let stepForm = document.querySelector("#js-addstep-template").firstElementChild.cloneNode(true);
+
+  stepForm.id = `js-step${index}`;
+
+  // set ids so that we can associate the step with the button clicked
+
+  stepForm.querySelector(".js-trash").id = `js-trash${index}`;
+  stepForm.querySelector(".js-add-payee").id = `js-add${index}`;
+  stepForm.querySelector(".js-save-step").id = `js-save${index}`;
+
+  stepForm.querySelector(".js-step").setAttribute('value', description);
+  stepForm.querySelector(".js-step-cap").setAttribute('value', cap);
+
+  let select = stepForm.querySelector(".js-step-type");
+  select.options[stepTypeIndex].setAttribute('selected', "true");
+
+  row.innerHTML = stepForm.innerHTML;
 }
 
 function showAlert(message, container) {
