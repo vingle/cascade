@@ -29,7 +29,10 @@ function addStepForm() {
   stepForm.querySelector(".js-add-payee").id = `js-add${step}`;
   stepForm.querySelector(".js-save-step").id = `js-save${step}`;
 
-  document.querySelector("#js-form-area").appendChild(stepForm);
+  let listItem = document.createElement("li");
+  listItem.appendChild(stepForm);
+  document.querySelector("#sortlist").appendChild(listItem);
+  slist("sortlist");
   step++;
 }
 
