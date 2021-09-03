@@ -369,7 +369,7 @@ myAgreement.addStep(step3);
 console.log(myAgreement);
 
 /* Drag and drop - from https://code-boxx.com/drag-drop-sortable-list-javascript/ 
-Half done. Works for top level but not nested level. Q.. as it is parri-parsu, why is 2nd level drag and dropable? Neatness only? Then ditch it. Otherwise switch to  https://lukasoppermann.github.io/html5sortable/index.html - which handles nesting - and also table rows. */
+Half done. Works for top level but not nested level. Otherwise switch to  https://lukasoppermann.github.io/html5sortable/index.html - which handles nesting - and also table rows. */
 
 function slist(target) {
   // (A) GET LIST + ATTACH CSS CLASS
