@@ -31,12 +31,12 @@ function addStepForm() {
 
   let listItem = document.createElement("li");
   listItem.appendChild(stepForm);
-  document.querySelector("#sortlist").appendChild(listItem);
-  let allListItems = document.querySelectorAll("#sortlist li");
 
   // It seems that slist is designed to be called only once, 
   // if you use it multiple times you need to remove the event listeners first
   // https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
+
+  let allListItems = document.querySelectorAll("#sortlist li");
 
   allListItems.forEach(function(el) {
     el.removeAttribute("draggable");
@@ -44,6 +44,7 @@ function addStepForm() {
     el.parentNode.replaceChild(elClone, el);
   });
 
+  document.querySelector("#sortlist").appendChild(listItem);
   slist("sortlist");
   step++;
 }
@@ -444,7 +445,6 @@ function slist(target) {
             droppedpos = it;
           }
         }
-
         if (currentpos < droppedpos) {
           this.parentNode.insertBefore(current, this.nextSibling);
         } else {
