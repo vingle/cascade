@@ -195,7 +195,7 @@ function saveStep(el) {
 
     fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
   
-    fixedStep.querySelector(".js-step-number").innerText = `Step ${Number(index) + 1}`;
+  //  fixedStep.querySelector(".js-step-number").innerText = `Step ${Number(index) + 1}`;
     fixedStep.querySelector(".js-step-description").innerText = description;
     fixedStep.querySelector(".js-step-cap").innerText = cap;
     fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
