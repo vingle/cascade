@@ -5,6 +5,7 @@ html {
 }
 body {
   margin: 0;
+  counter-reset: step;
 }
 main {
   display: block;
@@ -144,6 +145,26 @@ template {
 }
 [hidden] {
   display: none;
+}
+.js-step-number::before {
+  counter-increment: step;
+  content: "Step " counter(step); 
+}
+.js-step-summary .js-step-cap::before {
+  content: " (Cap: ";
+}
+.js-step-summary .js-step-cap::after {
+  content: ")";
+}
+.js-step-summary .js-step-cap:empty::before,
+.js-step-summary .js-step-cap:empty::after {
+  content: "";
+}
+.js-step-summary .js-step-description::before {
+  content: " - ";
+}
+.js-step-summary .js-step-description:empty::before {
+  content: "";
 }
 
 /* Miligram.css | MIT | github.com/milligram/milligram */
