@@ -58,7 +58,7 @@ function addStepForm() {
 
   let allListItems = document.querySelectorAll("#sortlist li");
 
-  allListItems.forEach(function(el) {
+  allListItems.forEach(el => {
     el.removeAttribute("draggable");
     elClone = el.cloneNode(true);
     el.parentNode.replaceChild(elClone, el);
@@ -79,7 +79,7 @@ function removeStepForm(el) {
   let steps = document.querySelectorAll("#js-form-area .js-addstep-form");
 
   steps.forEach((el, index) => {
-    console.log(el);
+    
     el.id = `js-step${index}`;
     el.querySelector(".js-trash").id = `js-trash${index}`;
     el.querySelector(".js-add-payee").id = `js-add${index}`;
@@ -305,15 +305,36 @@ function editStep(el) {
 
 function saveAgreement(el) {
   const currencyIndex = document.querySelector("#currency").selectedIndex;
+  
   if (currencyIndex > 0) {
-    /*let savedAgreement = new Agreement(
-      "Artists United",
-      "USD",
-      "$ilp.example.com/pN3K3rKULNQh",
-      "Artists United",
-      null,
-      "Founding agreement for film studio coop"
-    );*/
+
+    let savedAgreement = new Agreement(
+      document.querySelector("#name").value,
+      document.querySelector("#currency").value,
+      document.querySelector("#pointer").value,
+      document.querySelector("#contact").value,
+      document.querySelector("#email").value,
+      document.querySelector("#description").value
+    );
+
+    savedAgreement.addLimit(
+      document.querySelector("#period-repeat").value,
+      document.querySelector("#period-unit").value,
+      new Date(document.querySelector("#start").value), 
+      new Date(document.querySelector("#end").value)
+    );
+
+    const steps = document.querySelectorAll(".js-addstep-button");
+
+    steps.forEach((el, index) => {
+      let step = new Step(
+        el.querySelector(".js-step-description").innerText,
+        "todo",
+        el.querySelector(".js-step-cap").innerText
+      )
+    });
+
+    console.log(savedAgreement);
   } else {
     showAlert("Currency is a required field.", document.querySelector("#sortlist"));
   }
