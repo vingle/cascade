@@ -5,6 +5,11 @@ function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+let formatDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
 function getOptionIndex(selectElement, value) {
   let options = selectElement.options;
   index = 0;
@@ -209,27 +214,33 @@ function saveStep(el) {
   // type is a required field
   if (typeIndex > 0) {
     
-    let description = step.querySelector(".js-step").value;
+    
     let cap = step.querySelector(".js-step-cap").value;
 
-    let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
-
-    fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
-  
-  //  fixedStep.querySelector(".js-step-number").innerText = `Step ${Number(index) + 1}`;
-    fixedStep.querySelector(".js-step-description").innerText = description;
-    fixedStep.querySelector(".js-step-cap").innerText = cap;
-    fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
-  
-    let table = step.querySelector("table");
-  
-    step.innerHTML = fixedStep.innerHTML;
-    if (table !== null) {
-      step.querySelector(".js-step-details").append(table);
+    if (isNaN(cap)) {
+      showAlert("Cap must be a number.", step);
     } else {
-      step.querySelector(".js-step-details").append("No payees added.");
-    }
+      
+      cap = formatDollar.format(cap);
+
+      let description = step.querySelector(".js-step").value;
+      let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
+
+      fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
     
+      fixedStep.querySelector(".js-step-description").innerText = description;
+      fixedStep.querySelector(".js-step-cap").innerText = cap;
+      fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
+    
+      let table = step.querySelector("table");
+    
+      step.innerHTML = fixedStep.innerHTML;
+      if (table !== null) {
+        step.querySelector(".js-step-details").append(table);
+      } else {
+        step.querySelector(".js-step-details").append("No payees added.");
+      }
+    }
   } else {
     showAlert("Type is a required field.", step);
   }
