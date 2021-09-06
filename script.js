@@ -229,7 +229,6 @@ function saveStep(el) {
   // type is a required field
   if (typeIndex > 0) {
     
-    
     let cap = step.querySelector(".js-step-cap").value;
 
     if (isNaN(cap)) {
@@ -302,6 +301,22 @@ function editStep(el) {
   select.options[stepTypeIndex].setAttribute('selected', "true");
 
   row.innerHTML = stepForm.innerHTML;
+}
+
+function saveAgreement(el) {
+  const currencyIndex = document.querySelector("#currency").selectedIndex;
+  if (currencyIndex > 0) {
+    /*let savedAgreement = new Agreement(
+      "Artists United",
+      "USD",
+      "$ilp.example.com/pN3K3rKULNQh",
+      "Artists United",
+      null,
+      "Founding agreement for film studio coop"
+    );*/
+  } else {
+    showAlert("Currency is a required field.", document.querySelector("#sortlist"));
+  }
 }
 
 function showAlert(message, container) {
