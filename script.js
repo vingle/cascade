@@ -1,14 +1,29 @@
 let step = 0;
 let payee = 0;
 
-function insertAfter(newNode, referenceNode) {
-  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
-}
-
-let formatDollar = new Intl.NumberFormat('en-US', {
+let formatUSD = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
 });
+
+let formatGBP = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'GBP',
+});
+
+let formatEUR = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'EUR',
+});
+
+let formatINR = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'INR',
+});
+
+function insertAfter(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+}
 
 function getOptionIndex(selectElement, value) {
   let options = selectElement.options;
@@ -221,8 +236,24 @@ function saveStep(el) {
       showAlert("Cap must be a number.", step);
     } else {
       
-      cap = formatDollar.format(cap);
-
+      switch(document.querySelector("#currency").value) {
+        case "USD":
+          cap = formatUSD.format(cap);
+          break;
+        case "GBP":
+          cap = formatGBP.format(cap);
+          break;
+        case "EUR":
+          cap = formatEUR.format(cap);
+          break;
+        case "INR":
+          cap = formatINR.format(cap);
+          break;
+        default:
+          cap = formatUSD.format(cap);
+          break;
+      }
+      
       let description = step.querySelector(".js-step").value;
       let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
 
