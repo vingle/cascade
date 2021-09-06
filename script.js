@@ -80,7 +80,6 @@ function addPayee(el) {
   if (typeIndex > 0) {
 
     // create table if it doesn't exist
-
     let table = step.querySelector("table");
 
     if (typeof table === "undefined" || table === null) {
@@ -94,6 +93,10 @@ function addPayee(el) {
       table.querySelector(".js-payeetable-type").textContent = select.options[select.selectedIndex].textContent;
 
       insertAfter(table, el);
+    } else { // fix previous row
+      let simButton = document.createElement('button');
+      simButton.id = `js-payee-fix${payee-1}`;
+      fixPayee(simButton);
     }
 
     let row = document.querySelector("#js-payeerow-template");
@@ -188,7 +191,12 @@ function fixPayee(el) {
   }
   else
   {
-    showAlert("Type is a required field.", row.parentElement);
+    // checking whether typeIndex is undefined, which means row is already fixed
+    // so no need to show alert
+
+    if (typeof typeIndex !== "undefined" && typeIndex !== null) {
+      showAlert("Type is a required field.", row.parentElement);
+    }
   }
 }
 
