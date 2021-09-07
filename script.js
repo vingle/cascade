@@ -302,7 +302,12 @@ function editStep(el) {
   let select = stepForm.querySelector(".js-step-type");
   select.options[stepTypeIndex].setAttribute('selected', "true");
 
+  let payees = row.querySelector("table");
   row.innerHTML = stepForm.innerHTML;
+  let addPayeeBtn = row.querySelector(".js-add-payee");
+
+  // add the payee table after the "add payee" button
+  insertAfter(payees, addPayeeBtn);
 }
 
 function saveAgreement(el) {
