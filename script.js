@@ -58,7 +58,7 @@ function addStepForm() {
 
   let allListItems = document.querySelectorAll("#sortlist li");
 
-  allListItems.forEach(function(el) {
+  allListItems.forEach(el => {
     el.removeAttribute("draggable");
     elClone = el.cloneNode(true);
     el.parentNode.replaceChild(elClone, el);
@@ -79,7 +79,7 @@ function removeStepForm(el) {
   let steps = document.querySelectorAll("#js-form-area .js-addstep-form");
 
   steps.forEach((el, index) => {
-    console.log(el);
+    
     el.id = `js-step${index}`;
     el.querySelector(".js-trash").id = `js-trash${index}`;
     el.querySelector(".js-add-payee").id = `js-add${index}`;
@@ -225,10 +225,10 @@ function saveStep(el) {
 
   let step = document.querySelector(`#js-step${index}`);
   let typeIndex = step.querySelector(".js-step-type").selectedIndex;
+  let typeValue = step.querySelector(".js-step-type").value;
 
   // type is a required field
   if (typeIndex > 0) {
-    
     
     let cap = step.querySelector(".js-step-cap").value;
 
@@ -262,6 +262,7 @@ function saveStep(el) {
       fixedStep.querySelector(".js-step-description").innerText = description;
       fixedStep.querySelector(".js-step-cap").innerText = cap;
       fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
+      fixedStep.querySelector(".js-step-type-value").innerText = typeValue;
     
       let table = step.querySelector("table");
     
@@ -302,6 +303,63 @@ function editStep(el) {
   select.options[stepTypeIndex].setAttribute('selected', "true");
 
   row.innerHTML = stepForm.innerHTML;
+}
+
+function saveAgreement(el) {
+  const currencyIndex = document.querySelector("#currency").selectedIndex;
+  
+  if (currencyIndex > 0) {
+
+    let savedAgreement = new Agreement(
+      document.querySelector("#name").value,
+      document.querySelector("#currency").value,
+      document.querySelector("#pointer").value,
+      document.querySelector("#contact").value,
+      document.querySelector("#email").value,
+      document.querySelector("#description").value
+    );
+
+    savedAgreement.addLimit(
+      document.querySelector("#period-repeat").value,
+      document.querySelector("#period-unit").value,
+      new Date(document.querySelector("#start").value), 
+      new Date(document.querySelector("#end").value)
+    );
+
+    const steps = document.querySelectorAll(".js-addstep-form");
+
+    steps.forEach((step, index) => {
+      
+      // ignore the step template (which doesn't have an id)
+      if (step.id.startsWith("js-step") === true) {
+        let agreementStep = new Step(
+          step.querySelector(".js-step-description").innerText,
+          step.querySelector(".js-step-type-value").innerText,
+          step.querySelector(".js-step-cap").innerText
+        )
+        console.log(agreementStep);
+        const payees = step.querySelectorAll("tbody tr");
+        console.log(payees);
+
+        payees.forEach((payee, index) => {
+          let agreementPayee = new Payee(
+            payee.querySelector(".js-payee-name").innerText,
+            payee.querySelector(".js-payee-ac").innerText,
+            payee.querySelector(".js-payee-type").innerText,
+            payee.querySelector(".js-payee-amount").innerText
+          )
+          console.log(agreementPayee);
+          agreementStep.addPayee(agreementPayee);
+        });
+
+        savedAgreement.addStep(agreementStep);
+      }
+    });
+
+    console.log(savedAgreement);
+  } else {
+    showAlert("Currency is a required field.", document.querySelector("#sortlist"));
+  }
 }
 
 function showAlert(message, container) {
@@ -368,11 +426,11 @@ class Step {
 }
 
 class Payee {
-  constructor(name, paymentAddress, paymentType, percentage) {
+  constructor(name, paymentAddress, paymentType, amount) {
     this.name = name;
     this.paymentAddress = paymentAddress;
     this.paymentType = paymentType;
-    this.paymentPercentage = percentage;
+    this.paymentAmount = amount;
   }
 }
 
