@@ -300,7 +300,7 @@ function editStep(el) {
 
   // reformat as number 
   // https://stackoverflow.com/questions/559112/how-to-convert-a-currency-string-to-a-double-with-jquery-or-javascript
-  
+
   stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
 
   let select = stepForm.querySelector(".js-step-type");
@@ -311,7 +311,9 @@ function editStep(el) {
   let addPayeeBtn = row.querySelector(".js-add-payee");
 
   // add the payee table after the "add payee" button
-  insertAfter(payees, addPayeeBtn);
+  if (payees !== null) {
+    insertAfter(payees, addPayeeBtn);
+  }
 }
 
 function saveAgreement(el) {
