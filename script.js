@@ -225,6 +225,7 @@ function saveStep(el) {
 
   let step = document.querySelector(`#js-step${index}`);
   let typeIndex = step.querySelector(".js-step-type").selectedIndex;
+  let typeValue = step.querySelector(".js-step-type").value;
 
   // type is a required field
   if (typeIndex > 0) {
@@ -261,6 +262,7 @@ function saveStep(el) {
       fixedStep.querySelector(".js-step-description").innerText = description;
       fixedStep.querySelector(".js-step-cap").innerText = cap;
       fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
+      fixedStep.querySelector(".js-step-type-value").innerText = typeValue;
     
       let table = step.querySelector("table");
     
@@ -324,14 +326,34 @@ function saveAgreement(el) {
       new Date(document.querySelector("#end").value)
     );
 
-    const steps = document.querySelectorAll(".js-addstep-button");
+    const steps = document.querySelectorAll(".js-addstep-form");
 
-    steps.forEach((el, index) => {
-      let step = new Step(
-        el.querySelector(".js-step-description").innerText,
-        "todo",
-        el.querySelector(".js-step-cap").innerText
-      )
+    steps.forEach((step, index) => {
+      
+      // ignore the step template (which doesn't have an id)
+      if (step.id.startsWith("js-step") === true) {
+        let agreementStep = new Step(
+          step.querySelector(".js-step-description").innerText,
+          step.querySelector(".js-step-type-value").innerText,
+          step.querySelector(".js-step-cap").innerText
+        )
+        console.log(agreementStep);
+        const payees = step.querySelectorAll("tbody tr");
+        console.log(payees);
+
+        payees.forEach((payee, index) => {
+          let agreementPayee = new Payee(
+            payee.querySelector(".js-payee-name").innerText,
+            payee.querySelector(".js-payee-ac").innerText,
+            payee.querySelector(".js-payee-type").innerText,
+            payee.querySelector(".js-payee-amount").innerText
+          )
+          console.log(agreementPayee);
+          agreementStep.addPayee(agreementPayee);
+        });
+
+        savedAgreement.addStep(agreementStep);
+      }
     });
 
     console.log(savedAgreement);
@@ -404,11 +426,11 @@ class Step {
 }
 
 class Payee {
-  constructor(name, paymentAddress, paymentType, percentage) {
+  constructor(name, paymentAddress, paymentType, amount) {
     this.name = name;
     this.paymentAddress = paymentAddress;
     this.paymentType = paymentType;
-    this.paymentPercentage = percentage;
+    this.paymentAmount = amount;
   }
 }
 
