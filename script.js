@@ -58,11 +58,17 @@ function addStepForm() {
 
   let allListItems = document.querySelectorAll("#sortlist li");
 
+  
   allListItems.forEach(el => {
     el.removeAttribute("draggable");
+    // Note - when cloning you lose the selectedIndex of any select box and so need to re-insert
+    let selectedIndex = el.querySelector(".js-step-type").selectedIndex;
+    console.log(selectedIndex);
     elClone = el.cloneNode(true);
+    elClone.querySelector(".js-step-type").options[selectedIndex].setAttribute("selected","");
     el.parentNode.replaceChild(elClone, el);
   });
+
 
   document.querySelector("#sortlist").appendChild(listItem);
   slist("sortlist");
