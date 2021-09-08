@@ -114,6 +114,7 @@ function addPayee(el) {
 
       insertAfter(table, el);
     } else { // fix previous row
+      
       let simButton = document.createElement('button');
       simButton.id = `js-payee-fix${payee-1}`;
       fixPayee(simButton);
@@ -263,7 +264,16 @@ function saveStep(el) {
       fixedStep.querySelector(".js-step-cap").innerText = cap;
       fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
       fixedStep.querySelector(".js-step-type-value").innerText = typeValue;
-    
+
+      // fix last payee row
+      let rows = step.querySelectorAll(".js-payeerow");
+      let lastRow = rows[rows.length - 1];
+      let payeeIndex = lastRow.id.replace("js-payee", "");
+
+      let simButton = document.createElement('button');
+      simButton.id = `js-payee-fix${payeeIndex}`;
+      fixPayee(simButton);
+
       let table = step.querySelector("table");
     
       step.innerHTML = fixedStep.innerHTML;
