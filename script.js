@@ -62,10 +62,18 @@ function addStepForm() {
   allListItems.forEach(el => {
     el.removeAttribute("draggable");
     // Note - when cloning you lose the selectedIndex of any select box and so need to re-insert
-    let selectedIndex = el.querySelector(".js-step-type").selectedIndex;
-    console.log(selectedIndex);
+    let selector = el.querySelector(".js-step-type");
+    let selectedIndex = 0;
+    
+    if (selector !== null) {
+      selectedIndex = el.querySelector(".js-step-type").selectedIndex;
+    }
+    
     elClone = el.cloneNode(true);
-    elClone.querySelector(".js-step-type").options[selectedIndex].setAttribute("selected","");
+
+    if (selector !== null) {
+      elClone.querySelector(".js-step-type").options[selectedIndex].setAttribute("selected","");
+    }
     el.parentNode.replaceChild(elClone, el);
   });
 
@@ -282,6 +290,7 @@ function saveStep(el) {
 
       // fix last payee row
       let rows = step.querySelectorAll(".js-payeerow");
+      console.log(rows);
       let lastRow = rows[rows.length - 1];
       let payeeIndex = lastRow.id.replace("js-payee", "");
 
