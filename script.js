@@ -306,22 +306,22 @@ function saveStep(el) {
       // fix last payee row
       let rows = step.querySelectorAll(".js-payeerow");
       console.log(rows);
-      let lastRow = rows[rows.length - 1];
-      let payeeIndex = lastRow.id.replace("js-payee", "");
+      if (rows.length > 0) {
+        let lastRow = rows[rows.length - 1];
+        let payeeIndex = lastRow.id.replace("js-payee", "");
 
-      let simButton = document.createElement('button');
-      simButton.id = `js-payee-fix${payeeIndex}`;
-      let payeeWasFixed = fixPayee(simButton);
+        let simButton = document.createElement('button');
+        simButton.id = `js-payee-fix${payeeIndex}`;
+        let payeeWasFixed = fixPayee(simButton);
 
-      if (payeeWasFixed === true) {
-        let table = step.querySelector("table");
-    
-        step.innerHTML = fixedStep.innerHTML;
-        if (table !== null) {
+        if (payeeWasFixed === true) {
+          let table = step.querySelector("table");
+          step.innerHTML = fixedStep.innerHTML;
           step.querySelector(".js-step-details").append(table);
-        } else {
-          step.querySelector(".js-step-details").append("No payees added.");
         }
+      } else {
+        step.innerHTML = fixedStep.innerHTML;
+        step.querySelector(".js-step-details").append("No payees added.");
       }
     }
   } else {
