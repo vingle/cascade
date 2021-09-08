@@ -64,7 +64,7 @@ function addStepForm() {
     // Note - when cloning you lose the selectedIndex of any select box and so need to re-insert
     let selector = el.querySelector(".js-step-type");
     let selectedIndex = 0;
-    
+
     if (selector !== null) {
       selectedIndex = el.querySelector(".js-step-type").selectedIndex;
     }
@@ -112,6 +112,7 @@ function addPayee(el) {
   console.log(step.querySelector(".js-step-type"));
 
   let typeIndex = step.querySelector(".js-step-type").selectedIndex;
+  let canAddPayee = false;
 
   // type is a required field
   if (typeIndex > 0) {
@@ -130,32 +131,40 @@ function addPayee(el) {
       table.querySelector(".js-payeetable-type").textContent = select.options[select.selectedIndex].textContent;
 
       insertAfter(table, el);
+      canAddPayee = true;
     } else { // fix previous row
 
       let rows = step.querySelectorAll(".js-payeerow");
       let lastRow = rows[rows.length - 1];
       let payeeIndex = lastRow.id.replace("js-payee", "");
-
-      console.log(payeeIndex);
-
-      let simButton = document.createElement('button');
-      simButton.id = `js-payee-fix${payeeIndex}`;
-      fixPayee(simButton);
+      let payeeTypeIndex = lastRow.querySelector(".js-payee-type").selectedIndex;
+      
+      if (payeeTypeIndex > 0) {
+        let simButton = document.createElement('button');
+        simButton.id = `js-payee-fix${payeeIndex}`;
+        fixPayee(simButton);
+        canAddPayee = true;
+      } else {
+        showAlert("Payee Type is a required field.", step);
+      }
     }
 
-    let row = document.querySelector("#js-payeerow-template");
+    if (canAddPayee === true) {
+      let row = document.querySelector("#js-payeerow-template");
 
-    // required as a reference for removal / adding
-    row.querySelector(".js-payeerow").id = `js-payee${payee}`;
-    row.querySelector(".js-remove").id = `js-remove${payee}`;
-    row.querySelector(".js-payee-fix").id = `js-payee-fix${payee}`;
-
-    payee++;
-
-    let tbody = table.querySelector("tbody");
-    tbody.innerHTML += row.innerHTML;
+      // required as a reference for removal / adding
+      row.querySelector(".js-payeerow").id = `js-payee${payee}`;
+      row.querySelector(".js-remove").id = `js-remove${payee}`;
+      row.querySelector(".js-payee-fix").id = `js-payee-fix${payee}`;
+  
+      payee++;
+  
+      let tbody = table.querySelector("tbody");
+      tbody.innerHTML += row.innerHTML;
+    }
+    
   } else {
-    showAlert("Type is a required field.", step);
+    showAlert("Step Type is a required field.", step);
   }
 }
 
@@ -232,6 +241,7 @@ function fixPayee(el) {
     fixedRow.querySelector(".js-payee-amount").textContent = payeeAmount;
 
     row.innerHTML = fixedRow.innerHTML;
+    return true;
   }
   else
   {
@@ -239,7 +249,10 @@ function fixPayee(el) {
     // so no need to show alert
 
     if (typeof typeIndex !== "undefined" && typeIndex !== null) {
-      showAlert("Type is a required field.", row.parentElement);
+      showAlert("Payee Type is a required field.", row.parentElement);
+      return false;
+    } else {
+      return true;
     }
   }
 }
@@ -296,19 +309,21 @@ function saveStep(el) {
 
       let simButton = document.createElement('button');
       simButton.id = `js-payee-fix${payeeIndex}`;
-      fixPayee(simButton);
+      let payeeWasFixed = fixPayee(simButton);
 
-      let table = step.querySelector("table");
+      if (payeeWasFixed === true) {
+        let table = step.querySelector("table");
     
-      step.innerHTML = fixedStep.innerHTML;
-      if (table !== null) {
-        step.querySelector(".js-step-details").append(table);
-      } else {
-        step.querySelector(".js-step-details").append("No payees added.");
+        step.innerHTML = fixedStep.innerHTML;
+        if (table !== null) {
+          step.querySelector(".js-step-details").append(table);
+        } else {
+          step.querySelector(".js-step-details").append("No payees added.");
+        }
       }
     }
   } else {
-    showAlert("Type is a required field.", step);
+    showAlert("Step Type is a required field.", step);
   }
 }
 
