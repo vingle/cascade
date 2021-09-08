@@ -94,6 +94,9 @@ function addPayee(el) {
   let index = el.id.replace("js-add", "");
   let step = document.querySelector(`#js-step${index}`);
 
+  console.log(step);
+  console.log(step.querySelector(".js-step-type"));
+
   let typeIndex = step.querySelector(".js-step-type").selectedIndex;
 
   // type is a required field
@@ -114,9 +117,15 @@ function addPayee(el) {
 
       insertAfter(table, el);
     } else { // fix previous row
-      
+
+      let rows = step.querySelectorAll(".js-payeerow");
+      let lastRow = rows[rows.length - 1];
+      let payeeIndex = lastRow.id.replace("js-payee", "");
+
+      console.log(payeeIndex);
+
       let simButton = document.createElement('button');
-      simButton.id = `js-payee-fix${payee-1}`;
+      simButton.id = `js-payee-fix${payeeIndex}`;
       fixPayee(simButton);
     }
 
