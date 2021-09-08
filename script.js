@@ -139,7 +139,9 @@ function addPayee(el) {
       let payeeIndex = lastRow.id.replace("js-payee", "");
       let payeeTypeIndex = lastRow.querySelector(".js-payee-type").selectedIndex;
       
-      if (payeeTypeIndex > 0) {
+      // checking that payee type has been selected OR that the index is undefined
+      // if index undefined means that the row is fixed so we can safely add a new one
+      if (payeeTypeIndex > 0 || typeof payeeTypeIndex === "undefined") {
         let simButton = document.createElement('button');
         simButton.id = `js-payee-fix${payeeIndex}`;
         fixPayee(simButton);
