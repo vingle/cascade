@@ -1,5 +1,6 @@
 let step = 0;
 let payee = 0;
+let originalCapPlaceHolder = null;
 
 let formatUSD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -36,6 +37,23 @@ function getOptionIndex(selectElement, value) {
   }
 }
 
+function checkCap(el) {
+  let index = el.id.replace("js-step-type", "");
+  let cap = document.querySelector(`#js-step-cap${index}`);
+
+  if (el.selectedIndex === 1) {
+    cap.removeAttribute("disabled");
+    if (originalCapPlaceHolder !== null) {
+      cap.placeholder = originalCapPlaceHolder;
+    }
+  } else {
+    cap.setAttribute("disabled", true);
+    cap.value = "";
+    originalCapPlaceHolder = cap.placeholder;
+    cap.placeholder = "n/a";
+  }
+}
+
 function addStepForm() {
   const stepForm = document
     .querySelector("#js-addstep-template")
@@ -48,6 +66,8 @@ function addStepForm() {
   stepForm.querySelector(".js-trash").id = `js-trash${step}`;
   stepForm.querySelector(".js-add-payee").id = `js-add${step}`;
   stepForm.querySelector(".js-save-step").id = `js-save${step}`;
+  stepForm.querySelector(".js-step-type").id = `js-step-type${step}`;
+  stepForm.querySelector(".js-step-cap").id = `js-step-cap${step}`;
 
   let listItem = document.createElement("li");
   listItem.appendChild(stepForm);
@@ -211,6 +231,7 @@ function editPayee(el) {
   editRow.querySelector(".js-payee-amount").setAttribute('value', payeeAmount);
 
   row.innerHTML = editRow.innerHTML;
+  
 }
 
 function fixPayee(el) {
@@ -271,26 +292,30 @@ function saveStep(el) {
     
     let cap = step.querySelector(".js-step-cap").value;
 
+    console.log("cap...");
+    console.log(cap);
+
     if (isNaN(cap)) {
       showAlert("Cap must be a number.", step);
     } else {
-      
-      switch(document.querySelector("#currency").value) {
-        case "USD":
-          cap = formatUSD.format(cap);
-          break;
-        case "GBP":
-          cap = formatGBP.format(cap);
-          break;
-        case "EUR":
-          cap = formatEUR.format(cap);
-          break;
-        case "INR":
-          cap = formatINR.format(cap);
-          break;
-        default:
-          cap = formatUSD.format(cap);
-          break;
+      if (cap.length > 0) {
+        switch(document.querySelector("#currency").value) {
+          case "USD":
+            cap = formatUSD.format(cap);
+            break;
+          case "GBP":
+            cap = formatGBP.format(cap);
+            break;
+          case "EUR":
+            cap = formatEUR.format(cap);
+            break;
+          case "INR":
+            cap = formatINR.format(cap);
+            break;
+          default:
+            cap = formatUSD.format(cap);
+            break;
+        }
       }
       
       let description = step.querySelector(".js-step").value;
@@ -347,13 +372,21 @@ function editStep(el) {
   stepForm.querySelector(".js-add-payee").id = `js-add${index}`;
   stepForm.querySelector(".js-save-step").id = `js-save${index}`;
 
+  stepForm.querySelector(".js-step-type").id = `js-step-type${index}`;
+  stepForm.querySelector(".js-step-cap").id = `js-step-cap${index}`;
+
   stepForm.querySelector(".js-step").setAttribute('value', description);
 
   // reformat as number 
   // https://stackoverflow.com/questions/559112/how-to-convert-a-currency-string-to-a-double-with-jquery-or-javascript
 
-  stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
+  console.log(cap);
+  console.log(cap.length);
 
+  if (cap.length > 0) {
+    stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
+  }
+  
   let select = stepForm.querySelector(".js-step-type");
   select.options[stepTypeIndex].setAttribute('selected', "true");
 
