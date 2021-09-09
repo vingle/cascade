@@ -41,7 +41,7 @@ function checkCap(el) {
   let index = el.id.replace("js-step-type", "");
   let cap = document.querySelector(`#js-step-cap${index}`);
 
-  if (el.selectedIndex === 1) {
+  if (el.selectedIndex === 2) {
     cap.removeAttribute("disabled");
     if (originalCapPlaceHolder !== null) {
       cap.placeholder = originalCapPlaceHolder;
