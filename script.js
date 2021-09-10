@@ -40,13 +40,20 @@ function getOptionIndex(selectElement, value) {
 function checkCap(el) {
   let index = el.id.replace("js-step-type", "");
   let cap = document.querySelector(`#js-step-cap${index}`);
+  let table = document.querySelector(`#js-payee-table${index}`);
+
+  if (table != null && el.selectedIndex > 0){
+    let selectedText = table.querySelector(".js-payeetable-type").textContent = el.options[el.selectedIndex].textContent;
+    table.querySelector(".js-payeetable-type").innerText = selectedText;
+  }
 
   if (el.selectedIndex === 2) {
     cap.removeAttribute("disabled");
     if (originalCapPlaceHolder !== null) {
       cap.placeholder = originalCapPlaceHolder;
     }
-  } else {
+  } 
+  if (el.selectedIndex === 1) {
     cap.setAttribute("disabled", true);
     cap.value = "";
     originalCapPlaceHolder = cap.placeholder;
