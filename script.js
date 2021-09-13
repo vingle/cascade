@@ -37,6 +37,22 @@ function getOptionIndex(selectElement, value) {
   }
 }
 
+function formatDate(d) {
+  let month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+  if (month.length < 2) {
+    month = '0' + month;
+  }
+    
+  if (day.length < 2) {
+    day = '0' + day;
+  }
+
+  return [year, month, day].join('-');
+}
+
 function checkCap(el) {
   let index = el.id.replace("js-step-type", "");
   let cap = document.querySelector(`#js-step-cap${index}`);
@@ -424,8 +440,8 @@ function saveAgreement(el) {
     savedAgreement.addLimit(
       document.querySelector("#period-repeat").value,
       document.querySelector("#period-unit").value,
-      new Date(document.querySelector("#start").value), 
-      new Date(document.querySelector("#end").value)
+      formatDate(new Date(document.querySelector("#start").value)), 
+      formatDate(new Date(document.querySelector("#end").value))
     );
 
     const steps = document.querySelectorAll(".js-addstep-form");
