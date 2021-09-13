@@ -1,6 +1,8 @@
 let step = 0;
 let payee = 0;
 let originalCapPlaceHolder = null;
+const localStorageId = "MOVA-Agreement-JSON";
+populateFromLocalStorage();
 
 let formatUSD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -474,10 +476,20 @@ function saveAgreement(el) {
       }
     });
 
+    // save to localStorage
+
+    localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
+
     console.log(savedAgreement);
   } else {
     showAlert("Currency is a required field.", document.querySelector("#sortlist"));
   }
+}
+
+function populateFromLocalStorage(){
+  let agreement = JSON.parse(localStorage.getItem(localStorageId));
+  console.log(agreement.name);
+  console.log(agreement);
 }
 
 function showAlert(message, container) {
