@@ -84,13 +84,17 @@ function checkCap(el) {
   }
 }
 
-function addStepForm() {
+function addStepForm(id) {
   const stepForm = document
     .querySelector("#js-addstep-template")
     .firstElementChild.cloneNode(true);
 
-  stepForm.id = `js-step${step}`;
-
+  if (typeof id !== 'undefined') {
+    stepForm.id = `js-step${id}`;
+  } else {
+    stepForm.id = `js-step${step}`;
+  }
+  
   // set ids so that we can associate the step with the button clicked
 
   stepForm.querySelector(".js-trash").id = `js-trash${step}`;
@@ -191,6 +195,7 @@ function addPayee(el) {
       
       // checking that payee type has been selected OR that the index is undefined
       // if index undefined means that the row is fixed so we can safely add a new one
+      // TODO - change this to having a param so that we don't have to simulate a button (see addStep)
       if (payeeTypeIndex > 0 || typeof payeeTypeIndex === "undefined") {
         let simButton = document.createElement('button');
         simButton.id = `js-payee-fix${payeeIndex}`;
@@ -504,7 +509,24 @@ function populateFromLocalStorage(){
   document.querySelector("#period-unit").value = agreement.unit;
   document.querySelector("#start").value = agreement.startDate;
   document.querySelector("#end").value = agreement.endDate;
-  
+
+  if (agreement.steps.length > 0) {
+    agreement.steps.forEach((step, index) => {
+      //create step
+      addStepForm(index);
+      const form = document.querySelector(`#js-step${index}`);
+      form.querySelector(".js-step").value = step.description;
+      form.querySelector(".js-step-type").value = step.type;
+
+      if (step.type === "fixed") {
+        form.querySelector(".js-step-cap").setAttribute("disabled", true);
+      } 
+      
+      form.querySelector(".js-step-cap").value = step.cap;
+      
+      
+    });
+  }
 }
 
 function showAlert(message, container) {
