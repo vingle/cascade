@@ -493,8 +493,18 @@ function saveAgreement(el) {
 
 function populateFromLocalStorage(){
   let agreement = JSON.parse(localStorage.getItem(localStorageId));
-  console.log(agreement.name);
+  //console.log(agreement.name);
   console.log(agreement);
+  document.querySelector("#name").value = agreement.name;
+  document.querySelector("#pointer").value = agreement.address;
+  document.querySelector("#currency").value = agreement.currency;
+  document.querySelector("#contact").value = agreement.contactName;
+  document.querySelector("#description").value = agreement.description;
+  document.querySelector("#period-repeat").value = agreement.repeatFor;
+  document.querySelector("#period-unit").value = agreement.unit;
+  document.querySelector("#start").value = agreement.startDate;
+  document.querySelector("#end").value = agreement.endDate;
+  
 }
 
 function showAlert(message, container) {
