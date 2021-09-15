@@ -52,7 +52,12 @@ function formatDate(d) {
     day = '0' + day;
   }
 
+  if (isNaN(year) || isNaN(month) || isNaN(day)) {
+    return "";
+  } 
+    
   return [year, month, day].join('-');
+  
 }
 
 function checkCap(el) {
