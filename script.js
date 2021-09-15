@@ -195,7 +195,7 @@ function addPayee(el) {
       
       // checking that payee type has been selected OR that the index is undefined
       // if index undefined means that the row is fixed so we can safely add a new one
-      // TODO - change this to having a param so that we don't have to simulate a button (see addStep)
+
       if (payeeTypeIndex > 0 || typeof payeeTypeIndex === "undefined") {
         let simButton = document.createElement('button');
         simButton.id = `js-payee-fix${payeeIndex}`;
@@ -436,6 +436,8 @@ function editStep(el) {
 }
 
 function saveAgreement(el) {
+
+  //TODO do not save agreement until all steps are saved???
   const currencyIndex = document.querySelector("#currency").selectedIndex;
   
   if (currencyIndex > 0) {
@@ -498,36 +500,53 @@ function saveAgreement(el) {
 
 function populateFromLocalStorage(){
   let agreement = JSON.parse(localStorage.getItem(localStorageId));
-  //console.log(agreement.name);
-  console.log(agreement);
-  document.querySelector("#name").value = agreement.name;
-  document.querySelector("#pointer").value = agreement.address;
-  document.querySelector("#currency").value = agreement.currency;
-  document.querySelector("#contact").value = agreement.contactName;
-  document.querySelector("#description").value = agreement.description;
-  document.querySelector("#period-repeat").value = agreement.repeatFor;
-  document.querySelector("#period-unit").value = agreement.unit;
-  document.querySelector("#start").value = agreement.startDate;
-  document.querySelector("#end").value = agreement.endDate;
 
-  if (agreement.steps.length > 0) {
-    agreement.steps.forEach((step, index) => {
-      //create step
-      addStepForm(index);
-      const form = document.querySelector(`#js-step${index}`);
-      form.querySelector(".js-step").value = step.description;
-      form.querySelector(".js-step-type").value = step.type;
+  if (agreement !== null) {
+    //console.log(agreement.name);
+    console.log(agreement);
+    document.querySelector("#name").value = agreement.name;
+    document.querySelector("#pointer").value = agreement.address;
+    document.querySelector("#currency").value = agreement.currency;
+    document.querySelector("#contact").value = agreement.contactName;
+    document.querySelector("#description").value = agreement.description;
+    document.querySelector("#period-repeat").value = agreement.repeatFor;
+    document.querySelector("#period-unit").value = agreement.unit;
+    document.querySelector("#start").value = agreement.startDate;
+    document.querySelector("#end").value = agreement.endDate;
 
-      if (step.type === "fixed") {
-        form.querySelector(".js-step-cap").setAttribute("disabled", true);
-      } 
+    if (agreement.steps.length > 0) {
+      agreement.steps.forEach((step, index) => {
+        //create step
+        addStepForm(index);
+        const form = document.querySelector(`#js-step${index}`);
+        form.querySelector(".js-step").value = step.description;
+        form.querySelector(".js-step-type").value = step.type;
+
+        if (step.type === "fixed") {
+          form.querySelector(".js-step-cap").setAttribute("disabled", true);
+        } 
+        
+        form.querySelector(".js-step-cap").value = step.cap;
+        
+        step.payees.forEach((payee, index) => {
+          addPayee(form.querySelector(".js-add-payee"));
+          const payeeForm = document.querySelectorAll(".js-payeerow")[index];
+          payeeForm.querySelector(".js-payee-name").value = payee.name;
+          payeeForm.querySelector(".js-payee-ac").value = payee.paymentAddress;
+          payeeForm.querySelector(".js-payee-type").value = payee.paymentType;
+          payeeForm.querySelector(".js-payee-amount").value = payee.paymentAmount;
+        });
+
+        saveStep(form.querySelector(".js-save-step"));
+      });
       
-      form.querySelector(".js-step-cap").value = step.cap;
-      
-      
-    });
-  }
+    }
+
+    
+
+  } 
 }
+  
 
 function showAlert(message, container) {
   // create div
