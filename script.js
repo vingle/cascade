@@ -2,7 +2,6 @@ let step = 0;
 let payee = 0;
 let originalCapPlaceHolder = null;
 const localStorageId = "MOVA-Agreement-JSON";
-populateFromLocalStorage();
 
 let formatUSD = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -24,6 +23,8 @@ let formatINR = new Intl.NumberFormat('en-US', {
   currency: 'INR',
 });
 
+populateFromLocalStorage();
+
 function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
@@ -38,6 +39,7 @@ function getOptionIndex(selectElement, value) {
     index++;
   }
 }
+
 
 function formatDate(d) {
   let month = '' + (d.getMonth() + 1),
@@ -197,9 +199,10 @@ function addPayee(el) {
       // if index undefined means that the row is fixed so we can safely add a new one
 
       if (payeeTypeIndex > 0 || typeof payeeTypeIndex === "undefined") {
-        let simButton = document.createElement('button');
-        simButton.id = `js-payee-fix${payeeIndex}`;
-        fixPayee(simButton);
+        const el = {
+          id : payeeIndex + ""
+        }
+        fixPayee(el);
         canAddPayee = true;
       } else {
         showAlert("Payee Type is a required field.", step);
@@ -326,8 +329,6 @@ function saveStep(el) {
   if (typeIndex > 0) {
     
     let cap = step.querySelector(".js-step-cap").value;
-
-    console.log("cap...");
     console.log(cap);
 
     if (isNaN(cap)) {
@@ -370,22 +371,28 @@ function saveStep(el) {
         let lastRow = rows[rows.length - 1];
         let payeeIndex = lastRow.id.replace("js-payee", "");
 
-        let simButton = document.createElement('button');
-        simButton.id = `js-payee-fix${payeeIndex}`;
-        let payeeWasFixed = fixPayee(simButton);
+        const el = {
+          id : payeeIndex + ""
+        }
+
+        let payeeWasFixed = fixPayee(el);
 
         if (payeeWasFixed === true) {
           let table = step.querySelector("table");
           step.innerHTML = fixedStep.innerHTML;
           step.querySelector(".js-step-details").append(table);
+        } else {
+          return false;
         }
       } else {
         step.innerHTML = fixedStep.innerHTML;
         step.querySelector(".js-step-details").append("No payees added.");
       }
     }
+    return true;
   } else {
     showAlert("Step Type is a required field.", step);
+    return false;
   }
 }
 
@@ -439,6 +446,7 @@ function saveAgreement(el) {
 
   //TODO do not save agreement until all steps are saved???
   const currencyIndex = document.querySelector("#currency").selectedIndex;
+  let saveable = true;
   
   if (currencyIndex > 0) {
 
@@ -464,35 +472,58 @@ function saveAgreement(el) {
       
       // ignore the step template (which doesn't have an id)
       if (step.id.startsWith("js-step") === true) {
-        let agreementStep = new Step(
-          step.querySelector(".js-step-description").innerText,
-          step.querySelector(".js-step-type-value").innerText,
-          step.querySelector(".js-step-cap").innerText
-        )
-        console.log(agreementStep);
-        const payees = step.querySelectorAll("tbody tr");
-        console.log(payees);
 
-        payees.forEach((payee, index) => {
-          let agreementPayee = new Payee(
-            payee.querySelector(".js-payee-name").innerText,
-            payee.querySelector(".js-payee-ac").innerText,
-            payee.querySelector(".js-payee-type").innerText,
-            payee.querySelector(".js-payee-amount").innerText
+        // check that step has been saved, if not try and save it
+
+        let saveStepSuccess = true;
+        const inputs = step.querySelectorAll("input");
+        
+        if (inputs.length > 0) { // Step has open inputs
+          const el = {
+            id: index + ""
+          }
+          // attempt to save
+          saveStepSuccess = saveStep(el);
+        }
+
+        if (saveable === true) {
+          saveable = saveStepSuccess;
+        }
+
+        if (saveStepSuccess === true) {
+
+          let agreementStep = new Step(
+            step.querySelector(".js-step-description").innerText,
+            step.querySelector(".js-step-type-value").innerText,
+            step.querySelector(".js-step-cap").innerText
           )
-          console.log(agreementPayee);
-          agreementStep.addPayee(agreementPayee);
-        });
 
-        savedAgreement.addStep(agreementStep);
+          const payees = step.querySelectorAll("tbody tr");
+          payees.forEach((payee, index) => {
+
+            let agreementPayee = new Payee(
+              payee.querySelector(".js-payee-name").innerText,
+              payee.querySelector(".js-payee-ac").innerText,
+              payee.querySelector(".js-payee-type").innerText,
+              payee.querySelector(".js-payee-amount").innerText
+            )
+            console.log(agreementPayee);
+            agreementStep.addPayee(agreementPayee);
+
+          });
+
+          savedAgreement.addStep(agreementStep);
+        } 
       }
     });
 
     // save to localStorage
 
-    localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
-
-    console.log(savedAgreement);
+    if (saveable === true) {
+      localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
+      console.log(savedAgreement);
+    }
+    
   } else {
     showAlert("Currency is a required field.", document.querySelector("#sortlist"));
   }
@@ -524,16 +555,21 @@ function populateFromLocalStorage(){
 
         if (step.type === "fixed") {
           form.querySelector(".js-step-cap").setAttribute("disabled", true);
-        } 
+        } else {
+          form.querySelector(".js-step-cap").setAttribute('value', Number(step.cap.replace(/[^0-9.-]+/g,""))); 
+        }
         
-        form.querySelector(".js-step-cap").value = step.cap;
         
         step.payees.forEach((payee, index) => {
           addPayee(form.querySelector(".js-add-payee"));
           const payeeForm = document.querySelectorAll(".js-payeerow")[index];
           payeeForm.querySelector(".js-payee-name").value = payee.name;
           payeeForm.querySelector(".js-payee-ac").value = payee.paymentAddress;
-          payeeForm.querySelector(".js-payee-type").value = payee.paymentType;
+
+          let select = payeeForm.querySelector(".js-payee-type");
+          let selectedIndex = getOptionIndex(select, payee.paymentType);
+          select.options[selectedIndex].setAttribute('selected', "true");
+
           payeeForm.querySelector(".js-payee-amount").value = payee.paymentAmount;
         });
 
@@ -541,9 +577,6 @@ function populateFromLocalStorage(){
       });
       
     }
-
-    
-
   } 
 }
   
