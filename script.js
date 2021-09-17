@@ -3,26 +3,6 @@ let payee = 0;
 let originalCapPlaceHolder = null;
 const localStorageId = "MOVA-Agreement-JSON";
 
-let formatUSD = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
-
-let formatGBP = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'GBP',
-});
-
-let formatEUR = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'EUR',
-});
-
-let formatINR = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'INR',
-});
-
 populateFromLocalStorage();
 
 function insertAfter(newNode, referenceNode) {
@@ -104,6 +84,7 @@ function addStepForm(id) {
   stepForm.querySelector(".js-save-step").id = `js-save${step}`;
   stepForm.querySelector(".js-step-type").id = `js-step-type${step}`;
   stepForm.querySelector(".js-step-cap").id = `js-step-cap${step}`;
+  //stepForm.querySelector(".js-step-cap-value").id = `js-step-cap-value${step}`;
 
   let listItem = document.createElement("li");
   listItem.appendChild(stepForm);
@@ -331,27 +312,21 @@ function saveStep(el) {
     let cap = step.querySelector(".js-step-cap").value;
     console.log(cap);
 
+    let formattedCap = "";
+
     if (isNaN(cap)) {
       showAlert("Cap must be a number.", step);
     } else {
       if (cap.length > 0) {
-        switch(document.querySelector("#currency").value) {
-          case "USD":
-            cap = formatUSD.format(cap);
-            break;
-          case "GBP":
-            cap = formatGBP.format(cap);
-            break;
-          case "EUR":
-            cap = formatEUR.format(cap);
-            break;
-          case "INR":
-            cap = formatINR.format(cap);
-            break;
-          default:
-            cap = formatUSD.format(cap);
-            break;
-        }
+        console.log(document.querySelector("#numberformat").value);
+
+        let formatCurrency = new Intl.NumberFormat(document.querySelector("#numberformat").value, {
+          style: 'currency',
+          currency: document.querySelector("#currency").value,
+        });
+
+        formattedCap = formatCurrency.format(cap);
+
       }
       
       let description = step.querySelector(".js-step").value;
@@ -360,7 +335,8 @@ function saveStep(el) {
       fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
     
       fixedStep.querySelector(".js-step-description").innerText = description;
-      fixedStep.querySelector(".js-step-cap").innerText = cap;
+      fixedStep.querySelector(".js-step-cap").innerText = formattedCap;
+      fixedStep.querySelector(".js-step-cap-value").innerText = cap;
       fixedStep.querySelector(".js-step-type-index").innerText = typeIndex;
       fixedStep.querySelector(".js-step-type-value").innerText = typeValue;
 
@@ -400,7 +376,7 @@ function editStep(el) {
   let index = el.id.replace("js-edit", "");
   let row = document.querySelector(`#js-step${index}`);
 
-  let cap = row.querySelector(".js-step-cap").textContent;
+  let cap = row.querySelector(".js-step-cap-value").textContent;
   let description = row.querySelector(".js-step-description").textContent;
   let stepTypeIndex = row.querySelector(".js-step-type-index").textContent;
 
@@ -416,6 +392,7 @@ function editStep(el) {
 
   stepForm.querySelector(".js-step-type").id = `js-step-type${index}`;
   stepForm.querySelector(".js-step-cap").id = `js-step-cap${index}`;
+  //stepForm.querySelector(".js-step-cap-value").id = `js-step-cap-value${index}`;
 
   stepForm.querySelector(".js-step").setAttribute('value', description);
 
@@ -426,7 +403,8 @@ function editStep(el) {
   console.log(cap.length);
 
   if (cap.length > 0) {
-    stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
+    //stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
+    stepForm.querySelector(".js-step-cap").setAttribute('value', cap); 
   }
   
   let select = stepForm.querySelector(".js-step-type");
@@ -495,7 +473,7 @@ function saveAgreement(el) {
           let agreementStep = new Step(
             step.querySelector(".js-step-description").innerText,
             step.querySelector(".js-step-type-value").innerText,
-            step.querySelector(".js-step-cap").innerText
+            step.querySelector(".js-step-cap-value").innerText
           )
 
           const payees = step.querySelectorAll("tbody tr");
@@ -556,7 +534,8 @@ function populateFromLocalStorage(){
         if (step.type === "fixed") {
           form.querySelector(".js-step-cap").setAttribute("disabled", true);
         } else {
-          form.querySelector(".js-step-cap").setAttribute('value', Number(step.cap.replace(/[^0-9.-]+/g,""))); 
+          //form.querySelector(".js-step-cap").setAttribute('value', Number(step.cap.replace(/[^0-9.-]+/g,""))); 
+          form.querySelector(".js-step-cap").setAttribute('value', step.cap); 
         }
         
         
