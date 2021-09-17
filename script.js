@@ -3,26 +3,6 @@ let payee = 0;
 let originalCapPlaceHolder = null;
 const localStorageId = "MOVA-Agreement-JSON";
 
-let formatUSD = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-});
-
-let formatGBP = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'GBP',
-});
-
-let formatEUR = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'EUR',
-});
-
-let formatINR = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'INR',
-});
-
 populateFromLocalStorage();
 
 function insertAfter(newNode, referenceNode) {
@@ -335,23 +315,15 @@ function saveStep(el) {
       showAlert("Cap must be a number.", step);
     } else {
       if (cap.length > 0) {
-        switch(document.querySelector("#currency").value) {
-          case "USD":
-            cap = formatUSD.format(cap);
-            break;
-          case "GBP":
-            cap = formatGBP.format(cap);
-            break;
-          case "EUR":
-            cap = formatEUR.format(cap);
-            break;
-          case "INR":
-            cap = formatINR.format(cap);
-            break;
-          default:
-            cap = formatUSD.format(cap);
-            break;
-        }
+        console.log(document.querySelector("#numberformat").value);
+
+        let formatCurrency = new Intl.NumberFormat(document.querySelector("#numberformat").value, {
+          style: 'currency',
+          currency: document.querySelector("#currency").value,
+        });
+
+        cap = formatCurrency.format(cap);
+
       }
       
       let description = step.querySelector(".js-step").value;
