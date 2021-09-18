@@ -20,7 +20,6 @@ function getOptionIndex(selectElement, value) {
   }
 }
 
-
 function formatDate(d) {
   let month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
@@ -39,7 +38,20 @@ function formatDate(d) {
   } 
     
   return [year, month, day].join('-');
-  
+}
+
+function clearAgreement() {
+  localStorage.clear();
+
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach(el => {
+    el.value = "";
+  });
+
+  const selects = document.querySelectorAll("select");
+  selects.forEach(el => {
+    el.selectedIndex = 0;
+  });
 }
 
 function checkCap(el) {
