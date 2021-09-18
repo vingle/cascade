@@ -579,6 +579,66 @@ function populateFromLocalStorage(){
     }
   } 
 }
+
+function generateAgreement(){
+  console.log("here");
+  let agreement = JSON.parse(localStorage.getItem(localStorageId));
+
+  if (agreement !== null) {
+    console.log("here");
+    let rsml = document.querySelector("#js-rsml");
+
+    rsml.append(`name: ${agreement.name}\n`);
+    rsml.append(`description: ${agreement.description}\n`);
+    rsml.append(`address: ${agreement.address}\n`);
+    rsml.append(`currency: ${agreement.currency}\n`);
+    rsml.append(`contactName: ${agreement.contactName}\n`);
+    rsml.append(`repeatFor: ${agreement.repeatFor}\n`);
+    rsml.append(`unit: ${agreement.unit}\n`);
+    rsml.append(`startDate: ${agreement.startDate}\n`);
+    rsml.append(`endDate: ${agreement.endDate}\n`);
+
+    document.querySelector("#agreement").style.display = "block";
+
+
+    /*let payeeIndex = 0;
+
+    if (agreement.steps.length > 0) {
+      agreement.steps.forEach((step, index) => {
+        //create step
+        addStepForm(index);
+
+        const form = document.querySelector(`#js-step${index}`);
+        form.querySelector(".js-step").value = step.description;
+        form.querySelector(".js-step-type").value = step.type;
+
+        if (step.type === "fixed") {
+          form.querySelector(".js-step-cap").setAttribute("disabled", true);
+        } else {
+          form.querySelector(".js-step-cap").value = step.cap; 
+        }
+        
+        step.payees.forEach(payee => {
+          addPayee(form.querySelector(".js-add-payee"));
+          const payeeForm = document.querySelectorAll(".js-payeerow")[payeeIndex];
+          payeeIndex++;
+  
+          payeeForm.querySelector(".js-payee-name").value = payee.name;
+          payeeForm.querySelector(".js-payee-ac").value = payee.paymentAddress;
+
+          let select = payeeForm.querySelector(".js-payee-type");
+          let selectedIndex = getOptionIndex(select, payee.paymentType);
+          select.options[selectedIndex].setAttribute('selected', "true");
+
+          payeeForm.querySelector(".js-payee-amount").value = payee.paymentAmount;
+        });
+
+        saveStep(form.querySelector(".js-save-step"));
+      });
+      
+    }*/
+  } 
+}
   
 
 function showAlert(message, container) {
