@@ -281,12 +281,16 @@
         <ul id="sortlist">
         </ul>
       
-        <button onclick="saveAgreement(); return false">Save agreement<i class="gg-check-r"></i></button>&nbsp;<button class="button-secondary" disabled>Generate agreement</button><button class="button-secondary float-right clear-button" onclick="if(confirm('Are you sure you want to delete this agreement')) { clearAgreement();} return false;">Clear</button>
+        <button onclick="saveAgreement(); return false">Save agreement<i class="gg-check-r"></i></button>&nbsp;<button onclick="generateAgreement(); return false" class="button-secondary">Generate agreement</button><button class="button-secondary float-right clear-button" onclick="if(confirm('Are you sure you want to delete this agreement')) { clearAgreement();} return false;">Clear</button>
 
       </fieldset>
     </form>
   </div>
 
+  <div id="agreement" class="container margin-top" style="display:none">
+    <h4>RSML Agreement</h4>
+    <pre><code id="js-rsml"></code></pre>
+  </div>
 
 
 <!-- <div id="agreement" class="container margin-top">

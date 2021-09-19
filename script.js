@@ -9,9 +9,15 @@ function insertAfter(newNode, referenceNode) {
   referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }
 
+// A function we use when we have the actual text (not value)
+// of a select box, and we want to grab the index to set it
+
 function getOptionIndex(selectElement, value) {
   let options = selectElement.options;
   index = 0;
+
+  //TODO - check that options are not null or undefined
+
   for (let option of options) {
     if (option.textContent === value) {
       return index;
@@ -535,10 +541,13 @@ function populateFromLocalStorage(){
     document.querySelector("#start").value = agreement.startDate;
     document.querySelector("#end").value = agreement.endDate;
 
+    let payeeIndex = 0;
+
     if (agreement.steps.length > 0) {
       agreement.steps.forEach((step, index) => {
         //create step
         addStepForm(index);
+
         const form = document.querySelector(`#js-step${index}`);
         form.querySelector(".js-step").value = step.description;
         form.querySelector(".js-step-type").value = step.type;
@@ -546,14 +555,15 @@ function populateFromLocalStorage(){
         if (step.type === "fixed") {
           form.querySelector(".js-step-cap").setAttribute("disabled", true);
         } else {
-          //form.querySelector(".js-step-cap").setAttribute('value', Number(step.cap.replace(/[^0-9.-]+/g,""))); 
-          form.querySelector(".js-step-cap").setAttribute('value', step.cap); 
+          form.querySelector(".js-step-cap").value = step.cap; 
         }
         
-        
-        step.payees.forEach((payee, index) => {
+        step.payees.forEach(payee => {
           addPayee(form.querySelector(".js-add-payee"));
-          const payeeForm = document.querySelectorAll(".js-payeerow")[index];
+          const payeeForm = document.querySelectorAll(".js-payeerow")[payeeIndex];
+
+          payeeIndex++;
+  
           payeeForm.querySelector(".js-payee-name").value = payee.name;
           payeeForm.querySelector(".js-payee-ac").value = payee.paymentAddress;
 
@@ -568,6 +578,46 @@ function populateFromLocalStorage(){
       });
       
     }
+  } 
+}
+
+function generateAgreement(){
+  let agreement = JSON.parse(localStorage.getItem(localStorageId));
+
+  if (agreement !== null) {
+    let rsml = document.querySelector("#js-rsml");
+
+    rsml.append(`name: ${agreement.name}\n`);
+    rsml.append(`description: ${agreement.description}\n`);
+    rsml.append(`address: ${agreement.address}\n`);
+    rsml.append(`currency: ${agreement.currency}\n`);
+    rsml.append(`contactName: ${agreement.contactName}\n`);
+    rsml.append(`repeatFor: ${agreement.repeatFor}\n`);
+    rsml.append(`unit: ${agreement.unit}\n`);
+    rsml.append(`startDate: ${agreement.startDate}\n`);
+    rsml.append(`endDate: ${agreement.endDate}\n`);
+
+    if (agreement.steps.length > 0) {
+      rsml.append(`steps:\n`);
+      agreement.steps.forEach(step => {
+        
+        rsml.append(`- description: ${step.description}\n`);
+        rsml.append(`  type: ${step.type}\n`);
+        rsml.append(`  cap: ${step.cap}\n`);
+
+        if (step.payees.length > 0) {
+          rsml.append(`  payees:\n`);
+          step.payees.forEach(payee => {
+
+            rsml.append(`  - name: ${payee.name}\n`);
+            rsml.append(`    paymentAddress: ${payee.paymentAddress}\n`);
+            rsml.append(`    paymentType: ${payee.paymentType}\n`);
+            rsml.append(`    paymentAmount: ${payee.paymentAmount}\n`);
+          });
+        }
+      });
+    }
+    document.querySelector("#agreement").style.display = "block";
   } 
 }
   
