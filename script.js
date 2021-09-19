@@ -561,6 +561,7 @@ function populateFromLocalStorage(){
         step.payees.forEach(payee => {
           addPayee(form.querySelector(".js-add-payee"));
           const payeeForm = document.querySelectorAll(".js-payeerow")[payeeIndex];
+
           payeeIndex++;
   
           payeeForm.querySelector(".js-payee-name").value = payee.name;
@@ -581,11 +582,9 @@ function populateFromLocalStorage(){
 }
 
 function generateAgreement(){
-  console.log("here");
   let agreement = JSON.parse(localStorage.getItem(localStorageId));
 
   if (agreement !== null) {
-    console.log("here");
     let rsml = document.querySelector("#js-rsml");
 
     rsml.append(`name: ${agreement.name}\n`);
@@ -598,45 +597,27 @@ function generateAgreement(){
     rsml.append(`startDate: ${agreement.startDate}\n`);
     rsml.append(`endDate: ${agreement.endDate}\n`);
 
-    document.querySelector("#agreement").style.display = "block";
-
-
-    /*let payeeIndex = 0;
-
     if (agreement.steps.length > 0) {
-      agreement.steps.forEach((step, index) => {
-        //create step
-        addStepForm(index);
-
-        const form = document.querySelector(`#js-step${index}`);
-        form.querySelector(".js-step").value = step.description;
-        form.querySelector(".js-step-type").value = step.type;
-
-        if (step.type === "fixed") {
-          form.querySelector(".js-step-cap").setAttribute("disabled", true);
-        } else {
-          form.querySelector(".js-step-cap").value = step.cap; 
-        }
+      rsml.append(`steps:\n`);
+      agreement.steps.forEach(step => {
         
-        step.payees.forEach(payee => {
-          addPayee(form.querySelector(".js-add-payee"));
-          const payeeForm = document.querySelectorAll(".js-payeerow")[payeeIndex];
-          payeeIndex++;
-  
-          payeeForm.querySelector(".js-payee-name").value = payee.name;
-          payeeForm.querySelector(".js-payee-ac").value = payee.paymentAddress;
+        rsml.append(`- description: ${step.description}\n`);
+        rsml.append(`  type: ${step.type}\n`);
+        rsml.append(`  cap: ${step.cap}\n`);
 
-          let select = payeeForm.querySelector(".js-payee-type");
-          let selectedIndex = getOptionIndex(select, payee.paymentType);
-          select.options[selectedIndex].setAttribute('selected', "true");
+        if (step.payees.length > 0) {
+          rsml.append(`  payees:\n`);
+          step.payees.forEach(payee => {
 
-          payeeForm.querySelector(".js-payee-amount").value = payee.paymentAmount;
-        });
-
-        saveStep(form.querySelector(".js-save-step"));
+            rsml.append(`  - name: ${payee.name}\n`);
+            rsml.append(`    paymentAddress: ${payee.paymentAddress}\n`);
+            rsml.append(`    paymentType: ${payee.paymentType}\n`);
+            rsml.append(`    paymentAmount: ${payee.paymentAmount}\n`);
+          });
+        }
       });
-      
-    }*/
+    }
+    document.querySelector("#agreement").style.display = "block";
   } 
 }
   
