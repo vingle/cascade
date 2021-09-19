@@ -26,6 +26,8 @@ function getOptionIndex(selectElement, value) {
   }
 }
 
+// Format dates as yyyy-mm-dd
+
 function formatDate(d) {
   let month = '' + (d.getMonth() + 1),
     day = '' + d.getDate(),
@@ -49,6 +51,9 @@ function formatDate(d) {
 function clearAgreement() {
   localStorage.clear();
 
+  // Sometimes we have to force input and select elements
+  // to be blank to reset them.
+
   const inputs = document.querySelectorAll("input");
   inputs.forEach(el => {
     el.value = "";
@@ -65,18 +70,22 @@ function checkCap(el) {
   let cap = document.querySelector(`#js-step-cap${index}`);
   let table = document.querySelector(`#js-payee-table${index}`);
 
+  // set the type field with the selected type text (not value)
   if (table != null && el.selectedIndex > 0){
     let selectedText = table.querySelector(".js-payeetable-type").textContent = el.options[el.selectedIndex].textContent;
     table.querySelector(".js-payeetable-type").innerText = selectedText;
   }
 
-  if (el.selectedIndex === 2) {
+  // check to see if we need to disable cap depending on options
+  // note - we use the index here so assumes order won't change
+
+  if (el.selectedIndex === 2) { // %
     cap.removeAttribute("disabled");
     if (originalCapPlaceHolder !== null) {
       cap.placeholder = originalCapPlaceHolder;
     }
   } 
-  if (el.selectedIndex === 1) {
+  if (el.selectedIndex === 1) { // Fixed
     cap.setAttribute("disabled", true);
     cap.value = "";
     originalCapPlaceHolder = cap.placeholder;
@@ -102,7 +111,6 @@ function addStepForm(id) {
   stepForm.querySelector(".js-save-step").id = `js-save${step}`;
   stepForm.querySelector(".js-step-type").id = `js-step-type${step}`;
   stepForm.querySelector(".js-step-cap").id = `js-step-cap${step}`;
-  //stepForm.querySelector(".js-step-cap-value").id = `js-step-cap-value${step}`;
 
   let listItem = document.createElement("li");
   listItem.appendChild(stepForm);
@@ -112,7 +120,6 @@ function addStepForm(id) {
   // https://stackoverflow.com/questions/19469881/remove-all-event-listeners-of-specific-type
 
   let allListItems = document.querySelectorAll("#sortlist li");
-
   
   allListItems.forEach(el => {
     el.removeAttribute("draggable");
@@ -131,7 +138,6 @@ function addStepForm(id) {
     }
     el.parentNode.replaceChild(elClone, el);
   });
-
 
   document.querySelector("#sortlist").appendChild(listItem);
   slist("sortlist");
@@ -162,9 +168,6 @@ function removeStepForm(el) {
 function addPayee(el) {
   let index = el.id.replace("js-add", "");
   let step = document.querySelector(`#js-step${index}`);
-
-  console.log(step);
-  console.log(step.querySelector(".js-step-type"));
 
   let typeIndex = step.querySelector(".js-step-type").selectedIndex;
   let canAddPayee = false;
@@ -268,7 +271,6 @@ function editPayee(el) {
   editRow.querySelector(".js-payee-amount").setAttribute('value', payeeAmount);
 
   row.innerHTML = editRow.innerHTML;
-  
 }
 
 function fixPayee(el) {
@@ -328,23 +330,18 @@ function saveStep(el) {
   if (typeIndex > 0) {
     
     let cap = step.querySelector(".js-step-cap").value;
-    console.log(cap);
-
     let formattedCap = "";
 
     if (isNaN(cap)) {
       showAlert("Cap must be a number.", step);
     } else {
       if (cap.length > 0) {
-        console.log(document.querySelector("#numberformat").value);
-
         let formatCurrency = new Intl.NumberFormat(document.querySelector("#numberformat").value, {
           style: 'currency',
           currency: document.querySelector("#currency").value,
         });
 
         formattedCap = formatCurrency.format(cap);
-
       }
       
       let description = step.querySelector(".js-step").value;
@@ -360,7 +357,7 @@ function saveStep(el) {
 
       // fix last payee row
       let rows = step.querySelectorAll(".js-payeerow");
-      console.log(rows);
+
       if (rows.length > 0) {
         let lastRow = rows[rows.length - 1];
         let payeeIndex = lastRow.id.replace("js-payee", "");
@@ -410,18 +407,10 @@ function editStep(el) {
 
   stepForm.querySelector(".js-step-type").id = `js-step-type${index}`;
   stepForm.querySelector(".js-step-cap").id = `js-step-cap${index}`;
-  //stepForm.querySelector(".js-step-cap-value").id = `js-step-cap-value${index}`;
 
   stepForm.querySelector(".js-step").setAttribute('value', description);
 
-  // reformat as number 
-  // https://stackoverflow.com/questions/559112/how-to-convert-a-currency-string-to-a-double-with-jquery-or-javascript
-
-  console.log(cap);
-  console.log(cap.length);
-
   if (cap.length > 0) {
-    //stepForm.querySelector(".js-step-cap").setAttribute('value', Number(cap.replace(/[^0-9.-]+/g,""))); 
     stepForm.querySelector(".js-step-cap").setAttribute('value', cap); 
   }
   
@@ -440,7 +429,6 @@ function editStep(el) {
 
 function saveAgreement(el) {
 
-  //TODO do not save agreement until all steps are saved???
   const currencyIndex = document.querySelector("#currency").selectedIndex;
   let saveable = true;
   
@@ -503,9 +491,7 @@ function saveAgreement(el) {
               payee.querySelector(".js-payee-type").innerText,
               payee.querySelector(".js-payee-amount").innerText
             )
-            console.log(agreementPayee);
             agreementStep.addPayee(agreementPayee);
-
           });
 
           savedAgreement.addStep(agreementStep);
@@ -517,20 +503,21 @@ function saveAgreement(el) {
 
     if (saveable === true) {
       localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
-      console.log(savedAgreement);
-    }
-    
+    } 
   } else {
     showAlert("Currency is a required field.", document.querySelector("#sortlist"));
   }
 }
 
 function populateFromLocalStorage(){
+
+  // The way we recreate the agreement from localStorage is to actually
+  // recreate all the forms, populate them and save them.
+  // The idea is to reuse existing functions.
+
   let agreement = JSON.parse(localStorage.getItem(localStorageId));
 
   if (agreement !== null) {
-    //console.log(agreement.name);
-    console.log(agreement);
     document.querySelector("#name").value = agreement.name;
     document.querySelector("#pointer").value = agreement.address;
     document.querySelector("#currency").value = agreement.currency;
@@ -576,7 +563,6 @@ function populateFromLocalStorage(){
 
         saveStep(form.querySelector(".js-save-step"));
       });
-      
     }
   } 
 }
@@ -620,21 +606,13 @@ function generateAgreement(){
     document.querySelector("#agreement").style.display = "block";
   } 
 }
-  
 
 function showAlert(message, container) {
-  // create div
   const div = document.createElement("div");
-  // add classes
   div.className = `alert`;
-  // add text
   div.appendChild(document.createTextNode(message));
-  // Get parent
-  //const container = document.querySelector(".container");
-  // get form
   const form = document.querySelector("#agreement-form");
   // insert alert
-  //container.insertBefore(div, form);
   container.appendChild(div);
   // timeout after 3 secs
   setTimeout(function () {
@@ -694,60 +672,6 @@ class Payee {
   }
 }
 
-let myAgreement = new Agreement(
-  "Artists United",
-  "USD",
-  "$ilp.example.com/pN3K3rKULNQh",
-  "Artists United",
-  null,
-  "Founding agreement for film studio coop"
-);
-
-myAgreement.addLimit(1, "year", new Date(2021, 8, 19), null);
-
-let step1 = new Step("Bonus for the studio founders", "%", 1000000);
-
-let payee1 = new Payee("Chaplin", "$payee.example.com/charles", "ilp", 25);
-step1.addPayee(payee1);
-
-let payee2 = new Payee("Pickford", "$payee.example.com/mary", "ilp", 25);
-step1.addPayee(payee2);
-
-let payee3 = new Payee("Griffith", "$payee.example.com/melanie", "ilp", 25);
-step1.addPayee(payee3);
-
-let payee4 = new Payee("Fairbanks", "$payee.example.com/douglass", "ilp", 25);
-step1.addPayee(payee4);
-
-myAgreement.addStep(step1);
-
-let step2 = new Step(null, "fixed", null);
-
-let payee5 = new Payee("Annual Expenses", "ID001", "dbse", "{{expenses}}");
-step2.addPayee(payee5);
-
-myAgreement.addStep(step2);
-
-let step3 = new Step("Profit share between founders and charity", "%", null);
-
-let payee6 = new Payee("Chaplin", "$payee.example.com/charles", "ilp", 12.5);
-step3.addPayee(payee6);
-
-let payee7 = new Payee("Pickford", "$payee.example.com/mary", "ilp", 12.5);
-step3.addPayee(payee7);
-
-let payee8 = new Payee("Griffith", "$payee.example.com/melanie", "ilp", 12.5);
-step3.addPayee(payee8);
-
-let payee9 = new Payee("Fairbanks", "$payee.example.com/douglass", "ilp", 12.5);
-step3.addPayee(payee9);
-
-let payee10 = new Payee("UNICEF", "$payee.example.com/unicef", "ilp", 50);
-step3.addPayee(payee10);
-
-myAgreement.addStep(step3);
-
-console.log(myAgreement);
 
 /* Drag and drop - from https://code-boxx.com/drag-drop-sortable-list-javascript/ 
 Half done. Works for top level but not nested level. Otherwise switch to  https://lukasoppermann.github.io/html5sortable/index.html - which handles nesting - and also table rows. */
