@@ -575,30 +575,27 @@ function generateAgreement(){
 
     rsml.append(`name: ${agreement.name}\n`);
     rsml.append(`description: ${agreement.description}\n`);
-    rsml.append(`address: ${agreement.address}\n`);
+    rsml.append(`pointer: ${agreement.address}\n`);
     rsml.append(`currency: ${agreement.currency}\n`);
-    rsml.append(`contactName: ${agreement.contactName}\n`);
-    rsml.append(`repeatFor: ${agreement.repeatFor}\n`);
-    rsml.append(`unit: ${agreement.unit}\n`);
-    rsml.append(`startDate: ${agreement.startDate}\n`);
-    rsml.append(`endDate: ${agreement.endDate}\n`);
+    rsml.append(`contact: ${agreement.contactName}\n`);
+    rsml.append(`email: ${agreement.contactEmail}\n`);
+    rsml.append(`starts: ${agreement.startDate}\n`);
+    rsml.append(`ends: ${agreement.endDate}\n`);
+    rsml.append(`period: ${agreement.repeatFor} ${agreement.unit}\n`);
 
     if (agreement.steps.length > 0) {
       rsml.append(`steps:\n`);
       agreement.steps.forEach(step => {
         
-        rsml.append(`- description: ${step.description}\n`);
-        rsml.append(`  type: ${step.type}\n`);
+        rsml.append(`-\n  type: ${step.type}\n`);
+        rsml.append(`  description: ${step.description}\n`);
         rsml.append(`  cap: ${step.cap}\n`);
 
         if (step.payees.length > 0) {
           rsml.append(`  payees:\n`);
           step.payees.forEach(payee => {
 
-            rsml.append(`  - name: ${payee.name}\n`);
-            rsml.append(`    paymentAddress: ${payee.paymentAddress}\n`);
-            rsml.append(`    paymentType: ${payee.paymentType}\n`);
-            rsml.append(`    paymentAmount: ${payee.paymentAmount}\n`);
+            rsml.append(`    - [ "${payee.name}", ${payee.paymentType}, "${payee.paymentAddress}", ${payee.paymentAmount} ]\n`);
           });
         }
       });
