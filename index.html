@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
-    <title>Document</title>
+    <title>Waterfall - MOVA</title>
 </head>
 <body>
     
@@ -276,12 +276,12 @@
             </div>
           </details>
         </fieldset>
-        <button onclick="addStepForm(); return false" class="js-addstep-button button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
+        <button onclick="agreement.addStepForm(); return false" class="js-addstep-button button-secondary margin2bottom">Add a step <i class="gg-add"></i></button>
               
         <ul id="sortlist">
         </ul>
       
-        <button onclick="saveAgreement(); return false">Save agreement<i class="gg-check-r"></i></button>&nbsp;<button onclick="generateAgreement(); return false" class="button-secondary">Generate agreement</button><button class="button-secondary float-right clear-button" onclick="if(confirm('Are you sure you want to delete this agreement')) { clearAgreement();} return false;">Clear</button>
+        <button onclick="agreement.saveAgreement(); return false">Save agreement<i class="gg-check-r"></i></button>&nbsp;<button onclick="agreement.generateAgreement(); return false" class="button-secondary">Generate agreement</button><button class="button-secondary float-right clear-button" onclick="if(confirm('Are you sure you want to delete this agreement')) { agreement.clearAgreement();} return false;">Clear</button>
 
       </fieldset>
     </form>
@@ -298,7 +298,7 @@
 
   <div id="js-addstep-template" style="display:none" >
     <fieldset class="js-addstep-form">
-      <div class="float-right"><i onclick="removeStepForm(this); return false" class="js-trash gg-trash"></i></div><h4>Add a step</h4>
+      <div class="float-right"><i onclick="agreement.removeStepForm(this); return false" class="js-trash gg-trash"></i></div><h4>Add a step</h4>
       <div class="row">
           <div class="column column-60">
               <label for="step">Description of step</label>
@@ -306,7 +306,7 @@
           </div>
           <div class="column column-20">
               <label for="step-type" class="required">Type</label>
-              <select onChange="checkCap(this); return false" class="js-step-type" name="step-type">
+              <select onChanagreement.checkCap(this); return false" class="js-step-type" name="step-type">
                 <option default> -- select -- </option>
                 <option value="fixed">Fixed</option>
                 <option value="percentage">%</option>
@@ -318,8 +318,8 @@
               </select>
           </div>
       </div>
-      <button onclick="addPayee(this); return false" class="js-add-payee button-secondary">Add a Payee <i class="gg-add"></i></button>
-      <div class="float-right"><button onclick="saveStep(this); return false" class="js-save-step margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
+      <button onclick="agreement.addPayee(this); return false" class="js-add-payee button-secondary">Add a Payee <i class="gg-add"></i></button>
+      <div class="float-right"><button onclick="agreement.saveStep(this); return false" class="js-save-step margin5top margin0bottom">Save step <i class="gg-check-r"></i></button></div>
     </fieldset>
   </div>
 
@@ -363,7 +363,7 @@
         <input type="text" class="js-payee-amount">
       </td>
       <td>
-        <div class="float-right"><i onclick="fixPayee(this); return false" class="js-payee-fix gg-check-r primary"></i><i onclick="removePayee(this); return false" class="js-remove gg-add turn"></i></div>
+        <div class="float-right"><i onclick="agreement.fixPayee(this); return false" class="js-payee-fix gg-check-r primary"></i><i onclick="agreement.removePayee(this); return false" class="js-remove gg-add turn"></i></div>
       </td>
     </tr>
   </table>
@@ -374,12 +374,12 @@
       <td class="js-payee-ac"></td>
       <td class="js-payee-type"></td>
       <td class="js-payee-amount"></td>
-      <td><div class="float-right"><i onclick="removePayee(this); return false" class="js-remove gg-trash"></i><i onclick="editPayee(this); return false" class="js-edit icss-edit"></i></div></td>
+      <td><div class="float-right"><i onclick="agreement.removePayee(this); return false" class="js-remove gg-trash"></i><i onclick="editPayee(this); return false" class="js-edit icss-edit"></i></div></td>
     </tr>
   </table>
 
   <div id="js-addstep-fixed-template" style="display:none" >
-    <div class="float-right"><i class="gg-arrow-align-v"></i><i onclick="editStep(this); return false" class="js-edit icss-edit"></i></div>
+    <div class="float-right"><i class="gg-arrow-align-v"></i><i onclick="agreement.editStep(this); return false" class="js-edit icss-edit"></i></div>
     <details class="js-step-details" open>
       <summary class="js-step-summary font2">
         <strong class="js-step-number"></strong><span class="js-step-description"></span> <em><span class="js-step-cap"></span><span class="js-step-cap-value" style="display:none"></span><span class="js-step-type-index" style="display:none"></span><span class="js-step-type-value" style="display:none"></span></em>
