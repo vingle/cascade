@@ -451,8 +451,8 @@ class WaterfallAgreement {
       savedAgreement.addLimit(
         document.querySelector("#period-repeat").value,
         document.querySelector("#period-unit").value,
-        formatDate(new Date(document.querySelector("#start").value)), 
-        formatDate(new Date(document.querySelector("#end").value))
+        this.formatDate(new Date(document.querySelector("#start").value)), 
+        this.formatDate(new Date(document.querySelector("#end").value))
       );
 
       const steps = document.querySelectorAll(".js-addstep-form");
@@ -507,7 +507,7 @@ class WaterfallAgreement {
       // save to localStorage
 
       if (saveable === true) {
-        localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
+        localStorage.setItem(this.localStorageId, JSON.stringify(savedAgreement));
       } 
     } else {
       this.showAlert("Currency is a required field.", document.querySelector("#sortlist"));
@@ -573,7 +573,7 @@ class WaterfallAgreement {
   }
 
   generateAgreement = () => {
-    let agreement = JSON.parse(localStorage.getItem(localStorageId));
+    let agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
