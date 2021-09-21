@@ -451,8 +451,8 @@ class WaterfallAgreement {
       savedAgreement.addLimit(
         document.querySelector("#period-repeat").value,
         document.querySelector("#period-unit").value,
-        formatDate(new Date(document.querySelector("#start").value)), 
-        formatDate(new Date(document.querySelector("#end").value))
+        this.formatDate(new Date(document.querySelector("#start").value)), 
+        this.formatDate(new Date(document.querySelector("#end").value))
       );
 
       const steps = document.querySelectorAll(".js-addstep-form");
@@ -507,7 +507,7 @@ class WaterfallAgreement {
       // save to localStorage
 
       if (saveable === true) {
-        localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
+        localStorage.setItem(this.localStorageId, JSON.stringify(savedAgreement));
       } 
     } else {
       this.showAlert("Currency is a required field.", document.querySelector("#sortlist"));
@@ -573,28 +573,58 @@ class WaterfallAgreement {
   }
 
   generateAgreement = () => {
-    let agreement = JSON.parse(localStorage.getItem(localStorageId));
+    let agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
 
       rsml.append(`name: ${agreement.name}\n`);
-      rsml.append(`description: ${agreement.description}\n`);
-      rsml.append(`pointer: ${agreement.address}\n`);
-      rsml.append(`currency: ${agreement.currency}\n`);
-      rsml.append(`contact: ${agreement.contactName}\n`);
-      rsml.append(`email: ${agreement.contactEmail}\n`);
-      rsml.append(`starts: ${agreement.startDate}\n`);
-      rsml.append(`ends: ${agreement.endDate}\n`);
-      rsml.append(`period: ${agreement.repeatFor} ${agreement.unit}\n`);
+
+      if (agreement.description.length > 0) {
+        rsml.append(`description: ${agreement.description}\n`);
+      }
+      
+      if (agreement.address.length > 0) {
+        rsml.append(`pointer: ${agreement.address}\n`);
+      }
+
+      if (agreement.currency.length > 0) {
+        rsml.append(`currency: ${agreement.currency}\n`);
+      }
+
+      if (agreement.contactName.length > 0) {
+        rsml.append(`contact: ${agreement.contactName}\n`);
+      }
+
+      if (agreement.contactEmail.length > 0) {
+        rsml.append(`email: ${agreement.contactEmail}\n`);
+      }
+
+      if (agreement.startDate.length > 0) {
+        rsml.append(`starts: ${agreement.startDate}\n`);
+      }
+
+      if (agreement.endDate.length > 0) {
+        rsml.append(`ends: ${agreement.endDate}\n`);
+      }
+
+      if (agreement.repeatFor.length > 0 && agreement.unit.length > 0) {
+        rsml.append(`period: ${agreement.repeatFor} ${agreement.unit}\n`);
+      }
 
       if (agreement.steps.length > 0) {
         rsml.append(`steps:\n`);
         agreement.steps.forEach(step => {
           
           rsml.append(`-\n  type: ${step.type}\n`);
-          rsml.append(`  description: ${step.description}\n`);
-          rsml.append(`  cap: ${step.cap}\n`);
+
+          if (step.description.length > 0) {
+            rsml.append(`  description: ${step.description}\n`);
+          }
+
+          if (step.cap.length > 0) {
+            rsml.append(`  cap: ${step.cap}\n`);
+          }
 
           if (step.payees.length > 0) {
             rsml.append(`  payees:\n`);
