@@ -1,11 +1,11 @@
 
 class WaterfallAgreement {
 
-  constructor() {
+  constructor(localStorageId) {
     this.step = 0;
     this.payee = 0;
     this.originalCapPlaceHolder = null;
-    this.localStorageId = "MOVA-Agreement-JSON";
+    this.localStorageId = localStorageId;
   
     this.populateFromLocalStorage();
   }
@@ -796,4 +796,4 @@ function slist(target) {
 }
 
 //initialise
-let agreement = new WaterfallAgreement();
+let agreement = new WaterfallAgreement("MOVA-Agreement-JSON");
