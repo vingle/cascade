@@ -441,7 +441,7 @@ class WaterfallAgreement {
     }
   }
 
-  saveAgreement = (el) => {
+  saveAgreement = () => {
 
     const currencyIndex = document.querySelector("#currency").selectedIndex;
     let saveable = true;
@@ -608,7 +608,11 @@ class WaterfallAgreement {
   }
 
   generateAgreement = () => {
-    let agreement = JSON.parse(localStorage.getItem(this.localStorageId));
+
+    // save agreement first, just in case
+    this.saveAgreement();
+
+    const agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
