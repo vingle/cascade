@@ -589,7 +589,7 @@ class WaterfallAgreement {
   }
 
   generateAgreement = () => {
-    const agreement = JSON.parse(localStorage.getItem(this.localStorageId));
+    let agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
