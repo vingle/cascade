@@ -64,6 +64,11 @@ class WaterfallAgreement {
       el.value = "";
     });
 
+    const textareas = document.querySelectorAll("textarea");
+    textareas.forEach(el => {
+      el.value = "";
+    });
+
     const selects = document.querySelectorAll("select");
     selects.forEach(el => {
       el.selectedIndex = 0;
