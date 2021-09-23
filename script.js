@@ -73,6 +73,8 @@ class WaterfallAgreement {
     selects.forEach(el => {
       el.selectedIndex = 0;
     });
+
+    document.querySelector("#sortlist").innerHTML = "";
   }
 
   checkCap = (el) => {
