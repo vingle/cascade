@@ -76,6 +76,7 @@ class WaterfallAgreement {
 
     document.querySelector("#sortlist").innerHTML = "";
     document.querySelector("#js-rsml").innerHTML = "";
+    document.querySelector("#agreement").style.display = "none";
   }
 
   checkCap = (el) => {
