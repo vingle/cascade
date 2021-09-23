@@ -600,6 +600,7 @@ class WaterfallAgreement {
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
+      rsml.innerHTML = "";
 
       rsml.append(`name: ${this.sanitise(agreement.name)}\n`);
 
