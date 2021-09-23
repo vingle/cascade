@@ -75,6 +75,7 @@ class WaterfallAgreement {
     });
 
     document.querySelector("#sortlist").innerHTML = "";
+    document.querySelector("#js-rsml").innerHTML = "";
   }
 
   checkCap = (el) => {
@@ -583,7 +584,7 @@ class WaterfallAgreement {
     const specialChars = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
 
     let quoteWrap = false;
-    
+
     specialChars.forEach(char => {
       if(str.indexOf(char) > -1) {
         quoteWrap = true;
