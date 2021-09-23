@@ -91,14 +91,14 @@ class WaterfallAgreement {
 
     if (el.selectedIndex === 2) { // %
       cap.removeAttribute("disabled");
-      if (originalCapPlaceHolder !== null) {
+      if (this.originalCapPlaceHolder !== null) {
         cap.placeholder = originalCapPlaceHolder;
       }
     } 
     if (el.selectedIndex === 1) { // Fixed
       cap.setAttribute("disabled", true);
       cap.value = "";
-      originalCapPlaceHolder = cap.placeholder;
+      this.originalCapPlaceHolder = cap.placeholder;
       cap.placeholder = "n/a";
     }
   }
