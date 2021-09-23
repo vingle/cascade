@@ -451,8 +451,8 @@ class WaterfallAgreement {
       savedAgreement.addLimit(
         document.querySelector("#period-repeat").value,
         document.querySelector("#period-unit").value,
-        formatDate(new Date(document.querySelector("#start").value)), 
-        formatDate(new Date(document.querySelector("#end").value))
+        this.formatDate(new Date(document.querySelector("#start").value)), 
+        this.formatDate(new Date(document.querySelector("#end").value))
       );
 
       const steps = document.querySelectorAll(".js-addstep-form");
@@ -507,7 +507,7 @@ class WaterfallAgreement {
       // save to localStorage
 
       if (saveable === true) {
-        localStorage.setItem(localStorageId, JSON.stringify(savedAgreement));
+        localStorage.setItem(this.localStorageId, JSON.stringify(savedAgreement));
       } 
     } else {
       this.showAlert("Currency is a required field.", document.querySelector("#sortlist"));
@@ -572,35 +572,81 @@ class WaterfallAgreement {
     } 
   }
 
+  sanitise = (str) => {
+    const charsToEscape = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
+    let quoteWrap = false;
+    charsToEscape.forEach(char => {
+      if(str.indexOf(char) > -1) {
+        quoteWrap = true;
+      }
+    });
+
+    if (quoteWrap === true) {
+      return `'${str}'`;
+    } else {
+      return str;
+    }
+  }
+
   generateAgreement = () => {
-    let agreement = JSON.parse(localStorage.getItem(localStorageId));
+    const agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
 
-      rsml.append(`name: ${agreement.name}\n`);
-      rsml.append(`description: ${agreement.description}\n`);
-      rsml.append(`pointer: ${agreement.address}\n`);
-      rsml.append(`currency: ${agreement.currency}\n`);
-      rsml.append(`contact: ${agreement.contactName}\n`);
-      rsml.append(`email: ${agreement.contactEmail}\n`);
-      rsml.append(`starts: ${agreement.startDate}\n`);
-      rsml.append(`ends: ${agreement.endDate}\n`);
-      rsml.append(`period: ${agreement.repeatFor} ${agreement.unit}\n`);
+      rsml.append(`name: ${this.sanitise(agreement.name)}\n`);
+
+      if (agreement.description.length > 0) {
+        rsml.append(`description: ${this.sanitise(agreement.description)}\n`);
+      }
+      
+      if (agreement.address.length > 0) {
+        rsml.append(`pointer: ${this.sanitise(agreement.address)}\n`);
+      }
+
+      if (agreement.currency.length > 0) {
+        rsml.append(`currency: ${this.sanitise(agreement.currency)}\n`);
+      }
+
+      if (agreement.contactName.length > 0) {
+        rsml.append(`contact: ${this.sanitise(agreement.contactName)}\n`);
+      }
+
+      if (agreement.contactEmail.length > 0) {
+        rsml.append(`email: ${this.sanitise(agreement.contactEmail)}\n`);
+      }
+
+      if (agreement.startDate.length > 0) {
+        rsml.append(`starts: ${this.sanitise(agreement.startDate)}\n`);
+      }
+
+      if (agreement.endDate.length > 0) {
+        rsml.append(`ends: ${this.sanitise(agreement.endDate)}\n`);
+      }
+
+      if (agreement.repeatFor.length > 0 && agreement.unit.length > 0) {
+        rsml.append(`period: ${this.sanitise(agreement.repeatFor)} ${this.sanitise(agreement.unit)}\n`);
+      }
 
       if (agreement.steps.length > 0) {
         rsml.append(`steps:\n`);
         agreement.steps.forEach(step => {
           
-          rsml.append(`-\n  type: ${step.type}\n`);
-          rsml.append(`  description: ${step.description}\n`);
-          rsml.append(`  cap: ${step.cap}\n`);
+          rsml.append(`-\n  type: ${this.sanitise(step.type)}\n`);
+
+          if (step.description.length > 0) {
+            rsml.append(`  description: ${this.sanitise(step.description)}\n`);
+          }
+
+          if (step.cap.length > 0) {
+            rsml.append(`  cap: ${this.sanitise(step.cap)}\n`);
+          }
 
           if (step.payees.length > 0) {
             rsml.append(`  payees:\n`);
             step.payees.forEach(payee => {
 
-              rsml.append(`    - [ "${payee.name}", ${payee.paymentType}, "${payee.paymentAddress}", ${payee.paymentAmount} ]\n`);
+              rsml.append(`    - [ ${this.sanitise(payee.name)}, ${this.sanitise(payee.paymentType)}, ${this.sanitise(payee.paymentAddress)}, ${this.sanitise(payee.paymentAmount)} ]\n`);
             });
           }
         });
@@ -614,7 +660,6 @@ class WaterfallAgreement {
     div.className = `alert`;
     div.appendChild(document.createTextNode(message));
     const form = document.querySelector("#agreement-form");
-    // insert alert
     container.appendChild(div);
     // timeout after 3 secs
     setTimeout(function () {
