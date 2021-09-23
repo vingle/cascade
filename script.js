@@ -580,10 +580,20 @@ class WaterfallAgreement {
   }
 
   sanitise = (str) => {
-    const charsToEscape = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
+    const specialChars = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
+
     let quoteWrap = false;
-    charsToEscape.forEach(char => {
+    
+    specialChars.forEach(char => {
       if(str.indexOf(char) > -1) {
+        quoteWrap = true;
+      }
+    });
+
+    const booleanStrings = ['yes','no','true','false'];
+
+    booleanStrings.forEach(string => {
+      if(str.toLowerCase() === string) {
         quoteWrap = true;
       }
     });
