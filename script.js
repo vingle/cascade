@@ -276,7 +276,7 @@ class WaterfallAgreement {
     editRow.querySelector(".js-payee-ac").setAttribute('value', payeeAccount);
 
     let select = editRow.querySelector(".js-payee-type");
-    let selectedIndex = getOptionIndex(select, payeeType);
+    let selectedIndex = this.getOptionIndex(select, payeeType);
     select.options[selectedIndex].setAttribute('selected', "true");
     editRow.querySelector(".js-payee-amount").setAttribute('value', payeeAmount);
 
