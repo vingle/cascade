@@ -600,6 +600,9 @@ class WaterfallAgreement {
       }
     });
 
+    str = str.replaceAll("'","''");
+    str = str.replaceAll('"','\\"');
+
     if (quoteWrap === true) {
       return `'${str}'`;
     } else {
