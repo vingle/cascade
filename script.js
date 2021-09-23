@@ -91,14 +91,14 @@ class WaterfallAgreement {
 
     if (el.selectedIndex === 2) { // %
       cap.removeAttribute("disabled");
-      if (originalCapPlaceHolder !== null) {
+      if (this.originalCapPlaceHolder !== null) {
         cap.placeholder = originalCapPlaceHolder;
       }
     } 
     if (el.selectedIndex === 1) { // Fixed
       cap.setAttribute("disabled", true);
       cap.value = "";
-      originalCapPlaceHolder = cap.placeholder;
+      this.originalCapPlaceHolder = cap.placeholder;
       cap.placeholder = "n/a";
     }
   }
@@ -276,7 +276,7 @@ class WaterfallAgreement {
     editRow.querySelector(".js-payee-ac").setAttribute('value', payeeAccount);
 
     let select = editRow.querySelector(".js-payee-type");
-    let selectedIndex = getOptionIndex(select, payeeType);
+    let selectedIndex = this.getOptionIndex(select, payeeType);
     select.options[selectedIndex].setAttribute('selected', "true");
     editRow.querySelector(".js-payee-amount").setAttribute('value', payeeAmount);
 
