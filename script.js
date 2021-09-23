@@ -73,6 +73,10 @@ class WaterfallAgreement {
     selects.forEach(el => {
       el.selectedIndex = 0;
     });
+
+    document.querySelector("#sortlist").innerHTML = "";
+    document.querySelector("#js-rsml").innerHTML = "";
+    document.querySelector("#agreement").style.display = "none";
   }
 
   checkCap = (el) => {
@@ -437,7 +441,7 @@ class WaterfallAgreement {
     }
   }
 
-  saveAgreement = (el) => {
+  saveAgreement = () => {
 
     const currencyIndex = document.querySelector("#currency").selectedIndex;
     let saveable = true;
@@ -578,13 +582,26 @@ class WaterfallAgreement {
   }
 
   sanitise = (str) => {
-    const charsToEscape = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
+    const specialChars = [':','{','}','[',']','&','*','#','?','|','-','<','>','=','!','%','@','\\'];
+
     let quoteWrap = false;
-    charsToEscape.forEach(char => {
+
+    specialChars.forEach(char => {
       if(str.indexOf(char) > -1) {
         quoteWrap = true;
       }
     });
+
+    const booleanStrings = ['yes','no','true','false'];
+
+    booleanStrings.forEach(string => {
+      if(str.toLowerCase() === string) {
+        quoteWrap = true;
+      }
+    });
+
+    str = str.replaceAll("'","''");
+    str = str.replaceAll('"','\\"');
 
     if (quoteWrap === true) {
       return `'${str}'`;
@@ -594,10 +611,15 @@ class WaterfallAgreement {
   }
 
   generateAgreement = () => {
-    let agreement = JSON.parse(localStorage.getItem(this.localStorageId));
+
+    // save agreement first, just in case
+    this.saveAgreement();
+
+    const agreement = JSON.parse(localStorage.getItem(this.localStorageId));
 
     if (agreement !== null) {
       let rsml = document.querySelector("#js-rsml");
+      rsml.innerHTML = "";
 
       rsml.append(`name: ${this.sanitise(agreement.name)}\n`);
 
