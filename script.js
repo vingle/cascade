@@ -477,7 +477,7 @@ class WaterfallAgreement {
               id: index + ""
             }
             // attempt to save
-            saveStepSuccess = saveStep(el);
+            saveStepSuccess = this.saveStep(el);
           }
 
           if (saveable === true) {
