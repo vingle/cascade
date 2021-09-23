@@ -306,7 +306,7 @@
           </div>
           <div class="column column-20">
               <label for="step-type" class="required">Type</label>
-              <select onChanagreement.checkCap(this); return false" class="js-step-type" name="step-type">
+              <select onChange="agreement.checkCap(this); return false" class="js-step-type" name="step-type">
                 <option default> -- select -- </option>
                 <option value="fixed">Fixed</option>
                 <option value="percentage">%</option>
@@ -374,7 +374,7 @@
       <td class="js-payee-ac"></td>
       <td class="js-payee-type"></td>
       <td class="js-payee-amount"></td>
-      <td><div class="float-right"><i onclick="agreement.removePayee(this); return false" class="js-remove gg-trash"></i><i onclick="editPayee(this); return false" class="js-edit icss-edit"></i></div></td>
+      <td><div class="float-right"><i onclick="agreement.removePayee(this); return false" class="js-remove gg-trash"></i><i onclick="agreement.editPayee(this); return false" class="js-edit icss-edit"></i></div></td>
     </tr>
   </table>
 
