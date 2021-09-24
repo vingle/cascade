@@ -1,6 +1,7 @@
-# Possible names
+# Revenue sharing agreement generator.
 
-- Waterfall (film reference, https://www.researchgate.net/figure/Waterfall-Recoupment_fig6_313582422)
-- Irrigate
-- Pour
-- Slice / Split
+A lightweight native javasceript builder to create agreements using the Revenue Sharing Agreement Language (https://github.com/openvideotech/rsl).
+
+by Mark Boas (js) and Nicol Wistreich (html/css). 
+
+Copyright Netribution Ltd 2001, licensed under AGPL.

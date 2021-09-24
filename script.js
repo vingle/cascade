@@ -1,12 +1,25 @@
+/*-------------------------------------------------------+
+| Cascade,  a revenue-sharing agreement builder          |
+| Copyright (C) 2021 Netribution Ltd                     |
+| Author: Mark Boas                                      |
+|         Nicol Wistreich                                |
++--------------------------------------------------------+
+| This program is released as free software under the    |
+| Affero GPL license. You can redistribute it and/or     |
+| modify it under the terms of this license which you    |
+| can read by viewing the included license.txt or online |
+| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| copyright header is strictly prohibited without        |
+| written permission from the original author(s).        |
++--------------------------------------------------------*/
 
-class WaterfallAgreement {
+class Cascade {
 
   constructor(localStorageId) {
     this.step = 0;
     this.payee = 0;
     this.originalCapPlaceHolder = null;
     this.localStorageId = localStorageId;
-  
     this.populateFromLocalStorage();
   }
   
@@ -88,7 +101,7 @@ class WaterfallAgreement {
     if (table != null && el.selectedIndex > 0){
       let selectedText = table.querySelector(".js-payeetable-type").textContent = el.options[el.selectedIndex].textContent;
       table.querySelector(".js-payeetable-type").innerText = selectedText;
-    }
+    };
 
     // check to see if we need to disable cap depending on options
     // note - we use the index here so assumes order won't change
@@ -105,7 +118,7 @@ class WaterfallAgreement {
       this.originalCapPlaceHolder = cap.placeholder;
       cap.placeholder = "n/a";
     }
-  }
+  };
 
   addStepForm = (id) => {
     const stepForm = document
@@ -156,7 +169,7 @@ class WaterfallAgreement {
     document.querySelector("#sortlist").appendChild(listItem);
     slist("sortlist");
     this.step++;
-  }
+  };
 
   removeStepForm = (el) => {
     const index = el.id.replace("js-trash", "");
@@ -263,19 +276,16 @@ class WaterfallAgreement {
   editPayee = (el) => {
     let index = el.id.replace("js-edit", "");
     let row = document.querySelector(`#js-payee${index}`);
-
     let payeeName = row.querySelector(".js-payee-name").textContent;
     let payeeAccount = row.querySelector(".js-payee-ac").textContent;
     let payeeType = row.querySelector(".js-payee-type").textContent;
     let payeeAmount = row.querySelector(".js-payee-amount").textContent;
-
     let editRow = document.querySelector("#js-payeerow-template").cloneNode(true);
 
     // required as a reference for removal / adding
     editRow.querySelector(".js-payeerow").id = `js-payee${index}`;
     editRow.querySelector(".js-remove").id = `js-remove${index}`;
     editRow.querySelector(".js-payee-fix").id = `js-payee-fix${index}`;
-
     editRow.querySelector(".js-payee-name").setAttribute('value', payeeName);
     editRow.querySelector(".js-payee-ac").setAttribute('value', payeeAccount);
 
@@ -298,19 +308,15 @@ class WaterfallAgreement {
 
       let payeeName = row.querySelector(".js-payee-name").value;
       let payeeAccount = row.querySelector(".js-payee-ac").value;
-
       let select = row.querySelector(".js-payee-type");
       let payeeType = select.options[select.selectedIndex].textContent;
-
       let payeeAmount = row.querySelector(".js-payee-amount").value;
-
       let fixedRow = document.querySelector("#js-payeerow-fixed-template").cloneNode(true);
 
       // required as a reference for removal / edit
       fixedRow.querySelector(".js-payeerow").id = `js-payee${index}`;
       fixedRow.querySelector(".js-remove").id = `js-remove${index}`;
       fixedRow.querySelector(".js-edit").id = `js-edit${index}`;
-
       fixedRow.querySelector(".js-payee-name").textContent = payeeName;
       fixedRow.querySelector(".js-payee-ac").textContent = payeeAccount;
       fixedRow.querySelector(".js-payee-type").textContent = payeeType;
@@ -335,7 +341,6 @@ class WaterfallAgreement {
 
   saveStep = (el) => {
     let index = el.id.replace("js-save", "");
-
     let step = document.querySelector(`#js-step${index}`);
     let typeIndex = step.querySelector(".js-step-type").selectedIndex;
     let typeValue = step.querySelector(".js-step-type").value;
@@ -362,7 +367,6 @@ class WaterfallAgreement {
         let fixedStep = document.querySelector("#js-addstep-fixed-template").cloneNode(true);
 
         fixedStep.querySelector(".js-edit").id = `js-edit${index}`;
-      
         fixedStep.querySelector(".js-step-description").innerText = description;
         fixedStep.querySelector(".js-step-cap").innerText = formattedCap;
         fixedStep.querySelector(".js-step-cap-value").innerText = cap;
@@ -404,7 +408,6 @@ class WaterfallAgreement {
   editStep = (el) => {
     let index = el.id.replace("js-edit", "");
     let row = document.querySelector(`#js-step${index}`);
-
     let cap = row.querySelector(".js-step-cap-value").textContent;
     let description = row.querySelector(".js-step-description").textContent;
     let stepTypeIndex = row.querySelector(".js-step-type-index").textContent;
@@ -418,10 +421,8 @@ class WaterfallAgreement {
     stepForm.querySelector(".js-trash").id = `js-trash${index}`;
     stepForm.querySelector(".js-add-payee").id = `js-add${index}`;
     stepForm.querySelector(".js-save-step").id = `js-save${index}`;
-
     stepForm.querySelector(".js-step-type").id = `js-step-type${index}`;
     stepForm.querySelector(".js-step-cap").id = `js-step-cap${index}`;
-
     stepForm.querySelector(".js-step").setAttribute('value', description);
 
     if (cap.length > 0) {
@@ -747,9 +748,7 @@ class Payee {
   }
 }
 
-
-/* Drag and drop - from https://code-boxx.com/drag-drop-sortable-list-javascript/ 
-Half done. Works for top level but not nested level. Otherwise switch to  https://lukasoppermann.github.io/html5sortable/index.html - which handles nesting - and also table rows. */
+/* Drag and drop - from https://code-boxx.com/drag-drop-sortable-list-javascript/ */
 
 function slist(target) {
   // (A) GET LIST + ATTACH CSS CLASS
@@ -823,4 +822,4 @@ function slist(target) {
 }
 
 //initialise
-let agreement = new WaterfallAgreement("MOVA-Agreement-JSON");
+let agreement = new Cascade("MOVA-Agreement-JSON");
