@@ -1,16 +1,21 @@
 /*-------------------------------------------------------+
 | Cascade,  a revenue-sharing agreement builder          |
 | Copyright (C) 2021 Netribution Ltd                     |
-| Author: Mark Boas                                      |
-|         Nicol Wistreich                                |
+| Authors: Mark Boas                                     |
+|          Nicol Wistreich                               |
 +--------------------------------------------------------+
-| This program is released as free software under the    |
-| Affero GPL license. You can redistribute it and/or     |
-| modify it under the terms of this license which you    |
-| can read by viewing the included license.txt or online |
-| at www.gnu.org/licenses/agpl.html. Removal of this     |
+| This program is free software: you can redistribute it |
+| and/or modify it under the terms of the Affero GPL     |
+| General Public License which you can read by viewing   |
+| the included license.txt or online at                  |
+| www.gnu.org/licenses/agpl.html. Removal of this        |
 | copyright header is strictly prohibited without        |
-| written permission from the original author(s).        |
+| written permission from the original authors.          |
+| This program is distributed in the hope that it will be|
+| useful, but WITHOUT ANY WARRANTY; without even the     |
+| implied warranty of MERCHANTABILITY or FITNESS FOR A   |
+| PARTICULAR PURPOSE.  See the GNU Affero General Public |
+| License for more details.                              |
 +--------------------------------------------------------*/
 
 class Cascade {
